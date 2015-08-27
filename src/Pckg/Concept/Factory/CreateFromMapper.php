@@ -2,7 +2,7 @@
 
 namespace Pckg\Concept\Factory;
 
-use LFW\Reflect;
+use Pckg\Reflect;
 
 trait CreateFromMapper
 {

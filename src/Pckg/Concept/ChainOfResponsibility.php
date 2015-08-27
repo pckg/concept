@@ -2,7 +2,7 @@
 
 namespace Pckg\Concept;
 
-use LFW\Reflect;
+use Pckg\Reflect;
 
 class ChainOfResponsibility
 {
