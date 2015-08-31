@@ -38,7 +38,11 @@ class ChainOfResponsibility
             $firstChain = $chain->setNext($firstChain);
         }
 
-        return Reflect::method($firstChain, $this->runMethod, $this->args);
+        startMeasure('Chain: ' . get_class($firstChain));
+        $return = Reflect::method($firstChain, $this->runMethod, $this->args);
+        stopMeasure('Chain: ' . get_class($firstChain));
+
+        return $return;
     }
 
     public function setRunMethod($runMethod)
