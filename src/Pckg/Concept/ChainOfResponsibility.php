@@ -8,14 +8,16 @@ class ChainOfResponsibility
 {
 
     protected $chains = [];
-    protected $firstChain = null;
-
-    protected $runMethod = 'execute';
+    protected $firstChain;
+    protected $runMethod;
     protected $args = [];
 
-    public function __construct($chains = [])
+    public function __construct($chains = [], $runMethod = 'execute', $args = [], $firstChain = null)
     {
         $this->chains = $chains;
+        $this->runMethod = $runMethod;
+        $this->args = $args;
+        $this->firstChain = $firstChain;
     }
 
     public function runChains()
@@ -24,25 +26,31 @@ class ChainOfResponsibility
             return null;
         }
 
-        if ($this->firstChain) {
-            $firstChain = $this->firstChain;
-        } else {
-            $firstChain = new AbstractObject();
+        $next = $this->firstChain ?: function () {
+            return $this;
+        };
+
+        foreach (array_reverse($this->chains) as $chain) {
+            $next = function () use ($chain, $next) {
+                startMeasure('Chain: ' . (is_object($chain) ? get_class($chain) : $chain) . '->' . $this->runMethod . '()');
+                if (is_string($chain)) {
+                    $chain = Reflect::create($chain);
+                }
+
+                if (is_callable($chain)) {
+                    $result = $chain(array_merge($this->args, ['next' => $next]));
+
+                } else {
+                    $result = Reflect::method($chain, $this->runMethod, array_merge($this->args, ['next' => $next]));
+
+                }
+                stopMeasure('Chain: ' . get_class($chain) . '->' . $this->runMethod . '()');
+
+                return $result;
+            };
         }
 
-        foreach (array_reverse($this->chains) AS $chain) {
-            if (is_string($chain)) {
-                $chain = Reflect::create($chain);
-            }
-
-            $firstChain = $chain->setNext($firstChain);
-        }
-
-        startMeasure('Chain: ' . get_class($firstChain));
-        $return = Reflect::method($firstChain, $this->runMethod, $this->args);
-        stopMeasure('Chain: ' . get_class($firstChain));
-
-        return $return;
+        return $next();
     }
 
     public function setRunMethod($runMethod)
@@ -57,11 +65,6 @@ class ChainOfResponsibility
         $this->firstChain = $firstChain;
 
         return $this;
-    }
-
-    public function getFirstChain()
-    {
-        return $this->firstChain;
     }
 
     public function setArgs($args)

@@ -18,4 +18,8 @@ abstract class AbstractEvent
         return $this->name;
     }
 
+    public function getEventHandlers() {
+        return $this->handlers;
+    }
+
 }

@@ -4,6 +4,7 @@ namespace Pckg\Concept;
 
 use Exception;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 use ReflectionParameter;
 
@@ -31,6 +32,7 @@ class Reflect
             return new $class;
         }
 
+        startMeasure('Creating ' . $class);
         $reflectionMethod = new ReflectionMethod($class, '__construct');
 
         $reflectionParams = static::paramsToArray($reflectionMethod->getParameters(), is_array($params) ? $params : [$params]);
@@ -38,6 +40,7 @@ class Reflect
         $reflection = new ReflectionClass($class);
 
         $newInstance = $reflection->newInstanceArgs($reflectionParams);
+        stopMeasure('Creating ' . $class);
 
         return $newInstance;
     }
@@ -51,7 +54,15 @@ class Reflect
      */
     public static function method($object, $method = '__construct', $params = [])
     {
-        $reflectionMethod = new ReflectionMethod($object, $method);
+        try {
+            //var_dump("calling " . $method . " on " . get_class($object));
+            $reflectionMethod = new ReflectionMethod($object, $method);
+
+        } catch (ReflectionException $e) {
+            //var_dump("calling " . $method . " on " . get_class($object) . " call_user_func_array");
+            return call_user_func_array([$object, $method], $params); // @T00D00
+
+        }
 
         $params = static::paramsToArray($reflectionMethod->getParameters(), is_array($params) ? $params : [$params]);
 
@@ -63,6 +74,14 @@ class Reflect
         }
 
         return $result;
+    }
+
+    public function call(callable $callable, $params = []) {
+        $reflectionFunction = new \ReflectionFunction($callable);
+
+        $params = static::paramsToArray($reflectionFunction->getParameters(), is_array($params) ? $params : [$params]);
+
+        return $reflectionFunction->invoke($callable);
     }
 
     /**
@@ -99,7 +118,7 @@ class Reflect
         } else if ($key && !is_numeric($key) && array_key_exists($key, $data)) {
             return $data[$key];
 
-        } else if ($param->getClass() && ($class = $param->getClass()->getName()) && ($object = static::getHintedParameter($class, $data))) {
+        } else if (!$param->allowsNull() && $param->getClass() && ($class = $param->getClass()->getName()) && ($object = static::getHintedParameter($class, $data))) {
             return $object;
 
         } else if ($param->isOptional()) {

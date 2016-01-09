@@ -45,8 +45,8 @@ class Context
     }
 
     /**
-     * @param $key
-     * @param $class
+     * @param       $key
+     * @param       $class
      * @param array $args
      * @return mixed
      * @throws Exception
@@ -66,6 +66,9 @@ class Context
      */
     public function get($key)
     {
+        if (!isset($this->data[$key])) {
+            db(15);
+        }
         return $this->data[$key];
     }
 
@@ -77,6 +80,20 @@ class Context
     public function bind($key, $value)
     {
         $this->data[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param $key
+     * @param $value
+     * @return $this
+     */
+    public function bindIfNot($key, $value)
+    {
+        if (!isset($this->data[$key])) {
+            $this->data[$key] = $value;
+        }
 
         return $this;
     }
