@@ -3,6 +3,12 @@
 namespace Pckg\Concept;
 
 use Exception;
+use Pckg\Concept\Reflect\Resolver;
+use Pckg\Concept\Reflect\Resolver\Basic;
+use Pckg\Database\Record;
+use Pckg\Framework\Reflect\FrameworkResolver;
+use Pckg\Framework\Response;
+use Pckg\Framework\Router;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -15,10 +21,14 @@ use ReflectionParameter;
 class Reflect
 {
 
+    protected static $resolvers = [];
+
     /**
      * Create $class with parameters provided in $params variable and getData() method.
-     * @param $class
+     *
+     * @param       $class
      * @param array $params
+     *
      * @return object
      * @throws Exception
      */
@@ -47,19 +57,19 @@ class Reflect
 
     /**
      * Calls $method on $object with parameters provided in $params variable and getData method().
-     * @param $object
+     *
+     * @param        $object
      * @param string $method
-     * @param array $params
+     * @param array  $params
+     *
      * @return mixed
      */
     public static function method($object, $method = '__construct', $params = [])
     {
         try {
-            //var_dump("calling " . $method . " on " . get_class($object));
             $reflectionMethod = new ReflectionMethod($object, $method);
 
         } catch (ReflectionException $e) {
-            //var_dump("calling " . $method . " on " . get_class($object) . " call_user_func_array");
             return call_user_func_array([$object, $method], $params); // @T00D00
 
         }
@@ -76,7 +86,8 @@ class Reflect
         return $result;
     }
 
-    public function call(callable $callable, $params = []) {
+    public function call(callable $callable, $params = [])
+    {
         $reflectionFunction = new \ReflectionFunction($callable);
 
         $params = static::paramsToArray($reflectionFunction->getParameters(), is_array($params) ? $params : [$params]);
@@ -86,8 +97,10 @@ class Reflect
 
     /**
      * Transforms array of ReflectionParameters into array of arguments.
-     * @param $params
+     *
+     * @param       $params
      * @param array $data
+     *
      * @return array
      * @throws Exception
      */
@@ -104,9 +117,11 @@ class Reflect
 
     /**
      * Call correct strategy for finding $param value.
+     *
      * @param ReflectionParameter $param
-     * @param array $data
-     * @param null $key
+     * @param array               $data
+     * @param null                $key
+     *
      * @return mixed|null|object
      * @throws Exception
      */
@@ -129,32 +144,32 @@ class Reflect
 
         }
 
-        throw new Exception("Cannot find value for parameter " . $param->name . (!isset($class) ? " in " . $class : "") . ".");
+        throw new Exception("Cannot find value for parameter " . $param->name . (isset($class) ? " as " . $class : "") . ".");
     }
 
     /**
      * Searches for instance of $class in $data and getData().
+     *
      * @param $class
      * @param $data
+     *
      * @return object
      * @throws Exception
      */
     protected static function getHintedParameter($class, $data)
     {
         if (!class_exists($class) && !interface_exists($class)) {
-            throw new Exception('Class and/or interface ' . $class . ' does not exists.');
+            throw new Exception('Class and/or interface ' . $class . ' does not exist.');
         }
 
-        foreach (static::getData($data) as $arrData) {
-            foreach ($arrData as $object) {
-                if (is_object($object)) {
-                    if (get_class($object) === $class || is_subclass_of($object, $class)) {
-                        return $object;
+        foreach (static::getData($data) as $object) {
+            if (is_object($object)) {
+                if (get_class($object) === $class || is_subclass_of($object, $class)) {
+                    return $object;
 
-                    } else if (in_array($class, class_implements($object))) {
-                        return $object;
+                } else if (in_array($class, class_implements($object))) {
+                    return $object;
 
-                    }
                 }
             }
         }
@@ -165,19 +180,39 @@ class Reflect
     /**
      * @param $class
      * @param $data
+     *
      * @return object
      * @throws Exception
      */
     protected static function createHintedParameter($class, $data)
     {
-        if (class_exists($class)) {
-            return static::create($class, $data);
+        if (!static::$resolvers) {
+            static::$resolvers[] = new FrameworkResolver();
+            static::$resolvers[] = new Basic();
         }
+
+        foreach (static::$resolvers as $resolver) {
+            if ($resolved = $resolver->resolve($class)) {
+                return $resolved;
+            }
+        }
+    }
+
+    public static function addResolver(Resolver $resolver)
+    {
+        static::$resolvers[] = $resolver;
+    }
+
+    public static function prependResolver(Resolver $resolver)
+    {
+        array_unshift(static::$resolvers, $resolver);
     }
 
     /**
      * Returns array with array of searchable data.
+     *
      * @param $data
+     *
      * @return array
      */
     protected static function getData($data)
