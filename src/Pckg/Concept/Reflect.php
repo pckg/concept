@@ -70,8 +70,14 @@ class Reflect
             $reflectionMethod = new ReflectionMethod($object, $method);
 
         } catch (ReflectionException $e) {
-            return call_user_func_array([$object, $method], $params); // @T00D00
+            try {
+                $result = call_user_func_array([$object, $method], $params); // @T00D00
 
+                return $result;
+            } catch (\Exception $e) {
+                d($e->getMessage() . ' ' . $e->getFile() . ' ' . $e->getLine());
+                throw $e;
+            }
         }
 
         $params = static::paramsToArray($reflectionMethod->getParameters(), is_array($params) ? $params : [$params]);
@@ -162,7 +168,7 @@ class Reflect
             throw new Exception('Class and/or interface ' . $class . ' does not exist.');
         }
 
-        foreach (static::getData($data) as $object) {
+        foreach ($data as $object) {
             if (is_object($object)) {
                 if (get_class($object) === $class || is_subclass_of($object, $class)) {
                     return $object;
@@ -206,17 +212,5 @@ class Reflect
     public static function prependResolver(Resolver $resolver)
     {
         array_unshift(static::$resolvers, $resolver);
-    }
-
-    /**
-     * Returns array with array of searchable data.
-     *
-     * @param $data
-     *
-     * @return array
-     */
-    protected static function getData($data)
-    {
-        return [$data];
     }
 }
