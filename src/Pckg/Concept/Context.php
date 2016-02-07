@@ -67,7 +67,8 @@ class Context
     public function get($key)
     {
         if (!isset($this->data[$key])) {
-            db(15);
+            dd('Context::get ' . $key);
+            //db(15);
         }
         return $this->data[$key];
     }
