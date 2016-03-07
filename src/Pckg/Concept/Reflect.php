@@ -29,7 +29,6 @@ class Reflect
      * @param       $class
      * @param array $params
      *
-     * @return $class
      * @throws Exception
      */
     public static function create($class, $params = [])
