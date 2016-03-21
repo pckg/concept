@@ -18,23 +18,6 @@ class Dispatcher
         return $this;
     }
 
-    public function registerEvent(AbstractEvent $event)
-    {
-        $this->events[$event->getName()] = $event;
-
-        return $this;
-    }
-
-    public function hasListeners($event)
-    {
-        return isset($this->listeners[$this->getEventName($event)]);
-    }
-
-    public function getListeners($event)
-    {
-        return $this->listeners[$this->getEventName($event)];
-    }
-
     protected function getEventName($event)
     {
         if (is_string($event)) {
@@ -58,6 +41,23 @@ class Dispatcher
         $finalEvent = implode('.', $finalEvent);
 
         return $finalEvent;
+    }
+
+    public function registerEvent(AbstractEvent $event)
+    {
+        $this->events[$event->getName()] = $event;
+
+        return $this;
+    }
+
+    public function hasListeners($event)
+    {
+        return isset($this->listeners[$this->getEventName($event)]);
+    }
+
+    public function getListeners($event)
+    {
+        return $this->listeners[$this->getEventName($event)];
     }
 
     public function isTriggered($event, $num = 0)

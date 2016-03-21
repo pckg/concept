@@ -51,6 +51,60 @@ class AbstractObject
     }
 
     /**
+     * @param $return
+     * @return $this
+     */
+    public function setReturn($return)
+    {
+        $this->return = $return;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getArgs()
+    {
+        return $this->args;
+    }
+
+    /**
+     * @param $args
+     * @return $this
+     */
+    public function setArgs($args)
+    {
+        $this->args = $args;
+
+        return $this;
+    }
+
+    /**
+     * @param      $key
+     * @param null $default
+     * @return null
+     */
+    public function getArg($key, $default = null)
+    {
+        return isset($this->args[$key])
+            ? $this->args[$key]
+            : $default;
+    }
+
+    /**
+     * @param $key
+     * @param $value
+     * @return $this
+     */
+    public function setArg($key, $value)
+    {
+        $this->args[$key] = $value;
+
+        return $this;
+    }
+
+    /**
      * @param $method
      * @param $args
      * @return bool|null
@@ -81,17 +135,6 @@ class AbstractObject
     }
 
     /**
-     * @param $return
-     * @return $this
-     */
-    public function setReturn($return)
-    {
-        $this->return = $return;
-
-        return $this;
-    }
-
-    /**
      * @return true
      */
     protected function handleReturnTrue()
@@ -113,49 +156,6 @@ class AbstractObject
     protected function handleReturnNull()
     {
         return null;
-    }
-
-    /**
-     * @param $args
-     * @return $this
-     */
-    public function setArgs($args)
-    {
-        $this->args = $args;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getArgs()
-    {
-        return $this->args;
-    }
-
-    /**
-     * @param $key
-     * @param null $default
-     * @return null
-     */
-    public function getArg($key, $default = null)
-    {
-        return isset($this->args[$key])
-            ? $this->args[$key]
-            : $default;
-    }
-
-    /**
-     * @param $key
-     * @param $value
-     * @return $this
-     */
-    public function setArg($key, $value)
-    {
-        $this->args[$key] = $value;
-
-        return $this;
     }
 
 }

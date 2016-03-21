@@ -16,13 +16,6 @@ trait Multiton
         return static::$inst[$index];
     }
 
-    public function addInstance($instance)
-    {
-        static::$inst[] = $instance;
-
-        return count(self::$inst) - 1;
-    }
-
     public static function createInstance()
     {
         $instance = new static();
@@ -30,6 +23,13 @@ trait Multiton
         static::$inst[] = $instance;
 
         return $instance;
+    }
+
+    public function addInstance($instance)
+    {
+        static::$inst[] = $instance;
+
+        return count(self::$inst) - 1;
     }
 
 }

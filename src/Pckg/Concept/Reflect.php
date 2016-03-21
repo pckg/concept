@@ -44,7 +44,8 @@ class Reflect
         startMeasure('Creating ' . $class);
         $reflectionMethod = new ReflectionMethod($class, '__construct');
 
-        $reflectionParams = static::paramsToArray($reflectionMethod->getParameters(), is_array($params) ? $params : [$params]);
+        $reflectionParams = static::paramsToArray($reflectionMethod->getParameters(),
+            is_array($params) ? $params : [$params]);
 
         $reflection = new ReflectionClass($class);
 
@@ -138,7 +139,9 @@ class Reflect
         } else if ($key && !is_numeric($key) && array_key_exists($key, $data)) {
             return $data[$key];
 
-        } else if (!$param->allowsNull() && $param->getClass() && ($class = $param->getClass()->getName()) && ($object = static::getHintedParameter($class, $data))) {
+        } else if (!$param->allowsNull() && $param->getClass() && ($class = $param->getClass()->getName()) && ($object = static::getHintedParameter($class,
+                $data))
+        ) {
             return $object;
 
         } else if ($param->isOptional()) {

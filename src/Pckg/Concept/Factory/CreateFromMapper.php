@@ -9,11 +9,6 @@ trait CreateFromMapper
 
     protected $mapper;
 
-    public function canCreate($key)
-    {
-        return isset($this->mapper[$key]);
-    }
-
     public function create($key, $params = [])
     {
         if (is_array($key)) {
@@ -38,6 +33,11 @@ trait CreateFromMapper
         }
 
         return $arrClasses;
+    }
+
+    public function canCreate($key)
+    {
+        return isset($this->mapper[$key]);
     }
 
 }

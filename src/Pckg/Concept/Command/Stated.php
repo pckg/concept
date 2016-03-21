@@ -42,6 +42,17 @@ trait Stated
     }
 
     /**
+     * @param bool|true $success
+     * @return mixed
+     */
+    public function executeStated($success = true)
+    {
+        return $success
+            ? $this->successful()
+            : $this->error();
+    }
+
+    /**
      * @return mixed
      */
     public function successful()
@@ -59,16 +70,6 @@ trait Stated
         $func = $this->onErrorCallback;
 
         return $func();
-    }
-
-    /**
-     * @param bool|true $success
-     * @return mixed
-     */
-    public function executeStated($success = true) {
-        return $success
-            ? $this->successful()
-            : $this->error();
     }
 
 }
