@@ -70,6 +70,7 @@ class Context
             dd('Context::get ' . $key);
             //db(15);
         }
+
         return $this->data[$key];
     }
 
