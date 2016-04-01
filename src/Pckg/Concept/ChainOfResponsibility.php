@@ -20,6 +20,10 @@ class ChainOfResponsibility
         $this->firstChain = $firstChain;
     }
 
+    /**
+     * @T00D00 - this needs to be refactored without nesting ...
+     * @return null
+     */
     public function runChains()
     {
         if (!$this->chains) {
