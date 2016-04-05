@@ -4,8 +4,9 @@ namespace Pckg\Concept;
 
 use Exception;
 use Pckg\Concept\Reflect\Resolver;
-use Pckg\Concept\Reflect\Resolver\Basic;
+use Pckg\Concept\Reflect\Resolver\BasicResolver;
 use Pckg\Framework\Reflect\FrameworkResolver;
+use Pckg\Htmlbuilder\Resolver\FormResolver;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -189,13 +190,19 @@ class Reflect
      * @return object
      * @throws Exception
      */
-    protected static function createHintedParameter($class, $data)
+    protected static function createHintedParameter($class, $data = [])
     {
         if (!static::$resolvers) {
+            static::$resolvers[] = new FormResolver();
             static::$resolvers[] = new FrameworkResolver();
-            static::$resolvers[] = new Basic();
+            static::$resolvers[] = new BasicResolver();
         }
 
+        return static::resolve($class, $data);
+    }
+
+    public static function resolve($class, $data = [])
+    {
         foreach (static::$resolvers as $resolver) {
             if ($resolved = $resolver->resolve($class)) {
                 return $resolved;

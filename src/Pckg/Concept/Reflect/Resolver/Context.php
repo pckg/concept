@@ -1,11 +1,12 @@
 <?php namespace Pckg\Concept\Reflect\Resolver;
 
+use Pckg\Concept\Context as ContextConcept;
 use Pckg\Concept\Reflect\Resolver;
 
 class Context implements Resolver
 {
 
-    public function __construct(\Pckg\Concept\Context $context)
+    public function __construct(ContextConcept $context)
     {
         $this->context = $context;
     }

@@ -3,7 +3,7 @@
 use Pckg\Concept\Reflect;
 use Pckg\Concept\Reflect\Resolver;
 
-class Basic implements Resolver
+class BasicResolver implements Resolver
 {
     public function resolve($class)
     {
