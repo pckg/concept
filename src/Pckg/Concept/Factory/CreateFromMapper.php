@@ -2,6 +2,7 @@
 
 namespace Pckg\Concept\Factory;
 
+use Exception;
 use Pckg\Concept\Reflect;
 
 trait CreateFromMapper
@@ -20,10 +21,10 @@ trait CreateFromMapper
                 return Reflect::create($key, $params);
             }
 
-            throw new \Exception($key . " isn't mapped in " . static::CLASS);
+            throw new Exception($key . " isn't mapped in " . static::CLASS);
         }
 
-        return Reflect::create($this->mapper[$key], $params);
+        return Reflect::create(isset($this->mapper[$key]) ? $this->mapper[$key] : $key, $params);
     }
 
     public function createArray($arrClasses, $params = [])
@@ -35,9 +36,14 @@ trait CreateFromMapper
         return $arrClasses;
     }
 
+    public function canMap($key)
+    {
+        return $this->canCreate($key);
+    }
+
     public function canCreate($key)
     {
-        return isset($this->mapper[$key]);
+        return isset($this->mapper[$key]) || in_array($key, $this->mapper);
     }
 
 }

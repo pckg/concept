@@ -137,8 +137,10 @@ class Reflect
         } else if ($key && !is_numeric($key) && array_key_exists($key, $data)) {
             return $data[$key];
 
-        } else if (!$param->allowsNull() && $param->getClass() && ($class = $param->getClass()->getName()) && ($object = static::getHintedParameter($class,
-                $data))
+        } else if (
+            !$param->allowsNull() &&
+            $param->getClass() &&
+            ($class = $param->getClass()->getName()) && ($object = static::getHintedParameter($class, $data))
         ) {
             return $object;
 
@@ -193,8 +195,8 @@ class Reflect
     protected static function createHintedParameter($class, $data = [])
     {
         if (!static::$resolvers) {
-            static::$resolvers[] = new FormResolver();
             static::$resolvers[] = new FrameworkResolver();
+            static::$resolvers[] = new FormResolver();
             static::$resolvers[] = new BasicResolver();
         }
 

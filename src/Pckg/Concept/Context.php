@@ -15,6 +15,7 @@ class Context
 
     use Multiton, Mapper {
         Multiton::createInstance as parentCreateInstance;
+        Multiton::getInstance as parentGetInstance;
     }
 
     /**
@@ -42,6 +43,15 @@ class Context
         $instance->bind("Dispatcher", new Dispatcher());
 
         return $instance;
+    }
+
+    /**
+     * @return Context
+     * @throws Exception
+     */
+    public static function getInstance()
+    {
+        return static::parentGetInstance();
     }
 
     /**

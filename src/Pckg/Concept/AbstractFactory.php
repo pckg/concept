@@ -13,6 +13,12 @@ class AbstractFactory
 
     protected $services = [];
 
+    /**
+     * @param       $key
+     * @param array $params
+     * @return $key
+     * @throws \Exception
+     */
     public function create($key, $params = [])
     {
         $element = $this->parentCreate($key, $params);
@@ -49,11 +55,6 @@ class AbstractFactory
                 $object->{'add' . ucfirst($factory)}($service);
             }
         }
-    }
-
-    public function canMap($key)
-    {
-        return isset($this->mapper[$key]);
     }
 
     public function getMapper()
