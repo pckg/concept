@@ -34,9 +34,18 @@ class ChainOfResponsibility
             return $this;
         };
 
+        $prev = null;
         foreach (array_reverse($this->chains) as $chain) {
-            $next = function () use ($chain, $next) {
-                startMeasure('Chain: ' . (is_object($chain) ? get_class($chain) : $chain) . '->' . $this->runMethod . '()');
+            $next = function () use ($chain, $next, &$prev) {
+                $chainString = (is_object($chain) ? get_class($chain) : $chain);
+
+                if ($prev) {
+                    stopMeasure('Chain: ' . $prev . '->' . $this->runMethod . '()');
+                }
+
+                $prev = $chainString;
+
+                startMeasure('Chain: ' . $chainString . '->' . $this->runMethod . '()');
                 if (is_string($chain)) {
                     $chain = Reflect::create($chain);
                 }
@@ -48,13 +57,16 @@ class ChainOfResponsibility
                     $result = Reflect::method($chain, $this->runMethod, array_merge($this->args, ['next' => $next]));
 
                 }
-                stopMeasure('Chain: ' . get_class($chain) . '->' . $this->runMethod . '()');
 
                 return $result;
             };
         }
 
-        return $next();
+        $result = $next();
+
+        stopMeasure('Chain: ' . $prev . '->' . $this->runMethod . '()');
+
+        return $result;
     }
 
     public function setRunMethod($runMethod)
