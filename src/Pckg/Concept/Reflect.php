@@ -32,6 +32,7 @@ class Reflect
     public static function create($class, $params = [])
     {
         if (!class_exists($class)) {
+            debug_print_backtrace();
             throw new Exception('Class ' . $class . ' not found');
         }
 

@@ -38,9 +38,9 @@ class Context
     {
         $instance = static::parentCreateInstance();
 
-        $instance->bind('Context', $instance);
+        $instance->bind(Context::class, $instance);
 
-        $instance->bind("Dispatcher", new Dispatcher());
+        $instance->bind(Dispatcher::class, new Dispatcher());
 
         return $instance;
     }
@@ -61,13 +61,13 @@ class Context
      * @return mixed
      * @throws Exception
      */
-    public function getOrCreate($key, $class, $args = [])
+    public function getOrCreate($class, $args = [])
     {
-        if (!$this->exists($key)) {
-            $this->bind($key, Reflect::create($class, $args));
+        if (!$this->exists($class)) {
+            $this->bind($class, Reflect::create($class, $args));
         }
 
-        return $this->data[$key];
+        return $this->data[$class];
     }
 
     /**
