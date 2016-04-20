@@ -204,9 +204,9 @@ class Reflect
         return static::resolve($class, $data);
     }
 
-    public static function resolve($class, $data = [])
+    public static function resolve($class, $data = [], $resolvers = [])
     {
-        foreach (static::$resolvers as $resolver) {
+        foreach ($resolvers ?: static::$resolvers as $resolver) {
             if ($resolved = $resolver->resolve($class)) {
                 return $resolved;
             }
