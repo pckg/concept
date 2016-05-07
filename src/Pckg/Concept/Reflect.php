@@ -9,6 +9,7 @@ use Pckg\Framework\Reflect\FrameworkResolver;
 use Pckg\Htmlbuilder\Resolver\FormResolver;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionParameter;
 
@@ -91,13 +92,13 @@ class Reflect
         return $result;
     }
 
-    public function call(callable $callable, $params = [])
+    public static function call(callable $callable, $params = [])
     {
-        $reflectionFunction = new \ReflectionFunction($callable);
+        $reflectionFunction = new ReflectionFunction($callable);
 
         $params = static::paramsToArray($reflectionFunction->getParameters(), is_array($params) ? $params : [$params]);
 
-        return $reflectionFunction->invoke($callable);
+        return $reflectionFunction->invokeArgs($params);
     }
 
     /**
