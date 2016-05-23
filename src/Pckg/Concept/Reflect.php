@@ -33,7 +33,6 @@ class Reflect
     public static function create($class, $params = [])
     {
         if (!class_exists($class)) {
-            // debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
             throw new Exception('Class ' . $class . ' not found');
         }
 
@@ -44,8 +43,10 @@ class Reflect
         startMeasure('Creating ' . $class);
         $reflectionMethod = new ReflectionMethod($class, '__construct');
 
-        $reflectionParams = static::paramsToArray($reflectionMethod->getParameters(),
-            is_array($params) ? $params : [$params]);
+        $reflectionParams = static::paramsToArray(
+            $reflectionMethod->getParameters(),
+            is_array($params) ? $params : [$params]
+        );
 
         $reflection = new ReflectionClass($class);
 
