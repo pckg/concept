@@ -150,6 +150,9 @@ class Reflect
         } else if ($param->isOptional()) {
             return $param->getDefaultValue();
 
+        } else if (array_key_exists($key, $data)) {
+            return $data[$key];
+
         } else if ($param->allowsNull()) {
             return null;
 
