@@ -6,6 +6,7 @@ use Exception;
 use Pckg\Concept\Reflect\Resolver;
 use Pckg\Concept\Reflect\Resolver\BasicResolver;
 use Pckg\Framework\Reflect\FrameworkResolver;
+use Pckg\Generic\Entity\MenuItems;
 use Pckg\Htmlbuilder\Resolver\FormResolver;
 use ReflectionClass;
 use ReflectionException;
@@ -136,9 +137,15 @@ class Reflect
     protected static function getParamValue(ReflectionParameter $param, $data = [], $key = null)
     {
         if (array_key_exists($param->name, $data)) {
+            /**
+             * Param was found by param name.
+             */
             return $data[$param->name];
 
         } else if ($key && !is_numeric($key) && array_key_exists($key, $data)) {
+            /**
+             * Param was found by string key name.
+             */
             return $data[$key];
 
         } else if (
@@ -146,19 +153,40 @@ class Reflect
             $param->getClass() &&
             ($class = $param->getClass()->getName()) && ($object = static::getHintedParameter($class, $data))
         ) {
+            /**
+             * Class, subclass of interface was found in $data or was automatically created by resolvers.
+             */
+            return $object;
+
+        } elseif ($param->isCallable() && $object = static::getCallableParameter($data)) {
+            /**
+             * Callable parameter was found in $data.
+             */
             return $object;
 
         } else if ($param->isOptional()) {
+            /**
+             * Parameter has default value, pass it.
+             */
             return $param->getDefaultValue();
 
-        } else if (array_key_exists($key, $data)) {
+        } else if ($key >= 0 && array_key_exists($key, $data)) {
+            /**
+             * Numeric index was found.
+             */
             return $data[$key];
 
         } else if ($param->allowsNull()) {
+            /**
+             * Default value is null.
+             */
             return null;
 
         }
 
+        /**
+         * Throw exception on all other cases.
+         */
         throw new Exception("Cannot find value for parameter " . $param->name . (isset($class) ? " as " . $class : "") . ".");
     }
 
@@ -190,6 +218,16 @@ class Reflect
         }
 
         return static::createHintedParameter($class, $data);
+    }
+
+    protected static function getCallableParameter($data) {
+        foreach ($data as $item) {
+            if (is_callable($item)) {
+                return $item;
+            }
+        }
+
+        return null;
     }
 
     /**
