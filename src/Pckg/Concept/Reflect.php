@@ -34,7 +34,6 @@ class Reflect
     public static function create($class, $params = [])
     {
         if (!class_exists($class)) {
-            die(debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
             throw new Exception('Class ' . $class . ' not found');
         }
 
@@ -89,7 +88,9 @@ class Reflect
             $reflectionClass = new ReflectionClass(is_object($object) ? get_class($object) : $object);
             $result = $reflectionMethod->invokeArgs($reflectionClass, $params);
         } else {
+            startMeasure('Invoking ' . get_class($object) . '->' . $method);
             $result = $reflectionMethod->invokeArgs($object, $params);
+            stopMeasure('Invoking ' . get_class($object) . '->' . $method);
         }
 
         return $result;
