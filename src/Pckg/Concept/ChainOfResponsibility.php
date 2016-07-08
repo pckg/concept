@@ -52,9 +52,9 @@ class ChainOfResponsibility
             };
         }
 
-        startMeasure('Chain: ' . $this->runMethod . '()');
+        //startMeasure('Chain: ' . $this->runMethod . '()');
         $result = $next();
-        stopMeasure('Chain: ' . $this->runMethod . '()');
+        //stopMeasure('Chain: ' . $this->runMethod . '()');
 
         return $result;
     }

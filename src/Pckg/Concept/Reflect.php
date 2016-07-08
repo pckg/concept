@@ -41,7 +41,7 @@ class Reflect
             return new $class;
         }
 
-        startMeasure('Creating ' . $class);
+        //startMeasure('Creating ' . $class);
         $reflectionMethod = new ReflectionMethod($class, '__construct');
 
         $reflectionParams = static::paramsToArray(
@@ -52,7 +52,7 @@ class Reflect
         $reflection = new ReflectionClass($class);
 
         $newInstance = $reflection->newInstanceArgs($reflectionParams);
-        stopMeasure('Creating ' . $class);
+        //stopMeasure('Creating ' . $class);
 
         return $newInstance;
     }
@@ -88,9 +88,9 @@ class Reflect
             $reflectionClass = new ReflectionClass(is_object($object) ? get_class($object) : $object);
             $result = $reflectionMethod->invokeArgs($reflectionClass, $params);
         } else {
-            startMeasure('Invoking ' . get_class($object) . '->' . $method);
+            //startMeasure('Invoking ' . get_class($object) . '->' . $method);
             $result = $reflectionMethod->invokeArgs($object, $params);
-            stopMeasure('Invoking ' . get_class($object) . '->' . $method);
+            //stopMeasure('Invoking ' . get_class($object) . '->' . $method);
         }
 
         return $result;
