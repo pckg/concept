@@ -6,7 +6,6 @@ use Exception;
 use Pckg\Concept\Reflect\Resolver;
 use Pckg\Concept\Reflect\Resolver\BasicResolver;
 use Pckg\Framework\Reflect\FrameworkResolver;
-use Pckg\Generic\Entity\MenuItems;
 use Pckg\Htmlbuilder\Resolver\FormResolver;
 use ReflectionClass;
 use ReflectionException;
@@ -16,6 +15,7 @@ use ReflectionParameter;
 
 /**
  * Class Reflect
+ *
  * @package Pckg
  */
 class Reflect
@@ -52,6 +52,7 @@ class Reflect
         $reflection = new ReflectionClass($class);
 
         $newInstance = $reflection->newInstanceArgs($reflectionParams);
+
         //stopMeasure('Creating ' . $class);
 
         return $newInstance;
@@ -188,7 +189,9 @@ class Reflect
         /**
          * Throw exception on all other cases.
          */
-        throw new Exception("Cannot find value for parameter " . $param->name . (isset($class) ? " as " . $class : "") . ".");
+        throw new Exception(
+            "Cannot find value for parameter " . $param->name . (isset($class) ? " as " . $class : "") . "."
+        );
     }
 
     /**
@@ -221,7 +224,8 @@ class Reflect
         return static::createHintedParameter($class, $data);
     }
 
-    protected static function getCallableParameter($data) {
+    protected static function getCallableParameter($data)
+    {
         foreach ($data as $item) {
             if (is_callable($item)) {
                 return $item;

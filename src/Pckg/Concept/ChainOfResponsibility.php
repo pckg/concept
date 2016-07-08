@@ -8,8 +8,11 @@ class ChainOfResponsibility
 {
 
     protected $chains = [];
+
     protected $firstChain;
+
     protected $runMethod;
+
     protected $args = [];
 
     public function __construct($chains = [], $runMethod = 'execute', $args = [], $firstChain = null)
@@ -30,12 +33,12 @@ class ChainOfResponsibility
             return null;
         }
 
-        $next = $this->firstChain ?: function () {
+        $next = $this->firstChain ?: function() {
             return $this;
         };
 
         foreach (array_reverse($this->chains) as $chain) {
-            $next = function () use ($chain, $next) {
+            $next = function() use ($chain, $next) {
                 if (is_string($chain)) {
                     $chain = Reflect::create($chain);
                 }
@@ -54,6 +57,7 @@ class ChainOfResponsibility
 
         //startMeasure('Chain: ' . $this->runMethod . '()');
         $result = $next();
+
         //stopMeasure('Chain: ' . $this->runMethod . '()');
 
         return $result;

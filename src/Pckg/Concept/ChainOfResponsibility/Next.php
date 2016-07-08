@@ -4,6 +4,7 @@ namespace Pckg\Concept\ChainOfResponsibility;
 
 /**
  * Class Next
+ *
  * @package Pckg\Concept\ChainOfResponsibility
  */
 trait Next
@@ -16,6 +17,7 @@ trait Next
 
     /**
      * @param $next
+     *
      * @return $this
      */
     public function setNext($next)

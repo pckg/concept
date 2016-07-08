@@ -16,6 +16,7 @@ class AbstractFactory
     /**
      * @param       $key
      * @param array $params
+     *
      * @return $key
      * @throws \Exception
      */

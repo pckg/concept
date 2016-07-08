@@ -4,6 +4,7 @@ namespace Pckg\Concept\Command;
 
 /**
  * Class Stated
+ *
  * @package Pckg\Concept\Command
  */
 trait Stated
@@ -21,6 +22,7 @@ trait Stated
 
     /**
      * @param Closure $onSuccess
+     *
      * @return $this
      */
     public function onSuccess(callable $onSuccess)
@@ -32,6 +34,7 @@ trait Stated
 
     /**
      * @param Closure $onError
+     *
      * @return $this
      */
     public function onError(callable $onError)
@@ -43,6 +46,7 @@ trait Stated
 
     /**
      * @param bool|true $success
+     *
      * @return mixed
      */
     public function executeStated($success = true)

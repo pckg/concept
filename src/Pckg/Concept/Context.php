@@ -8,6 +8,7 @@ use Pckg\Concept\Event\Dispatcher;
 /**
  * Simple data collector.
  * Class Context
+ *
  * @package Pckg
  */
 class Context
@@ -58,6 +59,7 @@ class Context
      * @param       $key
      * @param       $class
      * @param array $args
+     *
      * @return mixed
      * @throws Exception
      */
@@ -72,6 +74,7 @@ class Context
 
     /**
      * @param $key
+     *
      * @return mixed
      */
     public function get($key)
@@ -87,6 +90,7 @@ class Context
     /**
      * @param $key
      * @param $value
+     *
      * @return $this
      */
     public function bind($key, $value)
@@ -99,6 +103,7 @@ class Context
     /**
      * @param $key
      * @param $value
+     *
      * @return $this
      */
     public function bindIfNot($key, $value)
@@ -112,6 +117,7 @@ class Context
 
     /**
      * @param $key
+     *
      * @return bool
      */
     public function exists($key)
@@ -121,6 +127,7 @@ class Context
 
     /**
      * @param $key
+     *
      * @return mixed
      * @throws Exception
      */

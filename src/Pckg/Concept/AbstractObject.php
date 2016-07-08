@@ -4,6 +4,7 @@ namespace Pckg\Concept;
 
 /**
  * Class AbstractObject
+ *
  * @package Pckg\Concept
  */
 class AbstractObject
@@ -32,6 +33,7 @@ class AbstractObject
     /**
      * @param $method
      * @param $args
+     *
      * @return string
      * @throws \Exception
      */
@@ -52,6 +54,7 @@ class AbstractObject
 
     /**
      * @param $return
+     *
      * @return $this
      */
     public function setReturn($return)
@@ -71,6 +74,7 @@ class AbstractObject
 
     /**
      * @param $args
+     *
      * @return $this
      */
     public function setArgs($args)
@@ -83,6 +87,7 @@ class AbstractObject
     /**
      * @param      $key
      * @param null $default
+     *
      * @return null
      */
     public function getArg($key, $default = null)
@@ -95,6 +100,7 @@ class AbstractObject
     /**
      * @param $key
      * @param $value
+     *
      * @return $this
      */
     public function setArg($key, $value)
@@ -107,6 +113,7 @@ class AbstractObject
     /**
      * @param $method
      * @param $args
+     *
      * @return bool|null
      */
     protected function handleReturnFirstObject($method, $args)
@@ -127,6 +134,7 @@ class AbstractObject
     /**
      * @param $method
      * @param $args
+     *
      * @return bool|null
      */
     protected function handleReturnResult($method, $args)
