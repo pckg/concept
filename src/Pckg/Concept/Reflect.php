@@ -73,7 +73,7 @@ class Reflect
 
         } catch (ReflectionException $e) {
             try {
-                $result = call_user_func_array([$object, $method], $params); // @T00D00
+                $result = call_user_func_array([$object, $method], $params);
 
                 return $result;
             } catch (\Exception $e) {

@@ -34,18 +34,8 @@ class ChainOfResponsibility
             return $this;
         };
 
-        $prev = null;
         foreach (array_reverse($this->chains) as $chain) {
-            $next = function () use ($chain, $next, &$prev) {
-                $chainString = (is_object($chain) ? get_class($chain) : $chain);
-
-                if ($prev) {
-                    //stopMeasure('Chain: ' . $prev . '->' . $this->runMethod . '()');
-                }
-
-                $prev = $chainString;
-
-                //startMeasure('Chain: ' . $chainString . '->' . $this->runMethod . '()');
+            $next = function () use ($chain, $next) {
                 if (is_string($chain)) {
                     $chain = Reflect::create($chain);
                 }
@@ -65,8 +55,6 @@ class ChainOfResponsibility
         startMeasure('Chain: ' . $this->runMethod . '()');
         $result = $next();
         stopMeasure('Chain: ' . $this->runMethod . '()');
-
-        //stopMeasure('Chain: ' . $prev . '->' . $this->runMethod . '()');
 
         return $result;
     }
