@@ -41,21 +41,21 @@ class Reflect
             return new $class;
         }
 
-        //startMeasure('Creating ' . $class);
-        $reflectionMethod = new ReflectionMethod($class, '__construct');
+        return measure(
+            'Creating ' . $class,
+            function() use ($class, $params) {
+                $reflectionMethod = new ReflectionMethod($class, '__construct');
 
-        $reflectionParams = static::paramsToArray(
-            $reflectionMethod->getParameters(),
-            is_array($params) ? $params : [$params]
+                $reflectionParams = static::paramsToArray(
+                    $reflectionMethod->getParameters(),
+                    is_array($params) ? $params : [$params]
+                );
+
+                $reflection = new ReflectionClass($class);
+
+                return $reflection->newInstanceArgs($reflectionParams);
+            }
         );
-
-        $reflection = new ReflectionClass($class);
-
-        $newInstance = $reflection->newInstanceArgs($reflectionParams);
-
-        //stopMeasure('Creating ' . $class);
-
-        return $newInstance;
     }
 
     /**
@@ -85,16 +85,20 @@ class Reflect
 
         $params = static::paramsToArray($reflectionMethod->getParameters(), is_array($params) ? $params : [$params]);
 
-        if ($reflectionMethod->isStatic()) {
-            $reflectionClass = new ReflectionClass(is_object($object) ? get_class($object) : $object);
-            $result = $reflectionMethod->invokeArgs($reflectionClass, $params);
-        } else {
-            //startMeasure('Invoking ' . get_class($object) . '->' . $method);
-            $result = $reflectionMethod->invokeArgs($object, $params);
-            //stopMeasure('Invoking ' . get_class($object) . '->' . $method);
-        }
+        return measure(
+            'Invoking ' . (is_object($object) ? get_class($object) : $object) . '->' . $method,
+            function() use ($reflectionMethod, $object, $params) {
+                if ($reflectionMethod->isStatic()) {
+                    $reflectionClass = new ReflectionClass(is_object($object) ? get_class($object) : $object);
 
-        return $result;
+                    return $reflectionMethod->invokeArgs($reflectionClass, $params);
+
+                } else {
+
+                    return $reflectionMethod->invokeArgs($object, $params);
+                }
+            }
+        );
     }
 
     public static function call(callable $callable, $params = [])
