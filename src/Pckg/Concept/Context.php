@@ -80,8 +80,7 @@ class Context
     public function get($key)
     {
         if (!isset($this->data[$key])) {
-            dd('Context::get ' . $key);
-            //db(15);
+            throw new Exception($key . " isn't set in Context!");
         }
 
         return $this->data[$key];
