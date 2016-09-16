@@ -88,6 +88,20 @@ class Context
 
     /**
      * @param $key
+     *
+     * @return mixed
+     */
+    public function getOrDefault($key, $default = null)
+    {
+        if (!isset($this->data[$key])) {
+            return $default;
+        }
+
+        return $this->data[$key];
+    }
+
+    /**
+     * @param $key
      * @param $value
      *
      * @return $this
