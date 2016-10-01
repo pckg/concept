@@ -1,6 +1,4 @@
-<?php
-
-namespace Pckg\Concept;
+<?php namespace Pckg\Concept;
 
 use Exception;
 use Pckg\Concept\Reflect\Resolver;

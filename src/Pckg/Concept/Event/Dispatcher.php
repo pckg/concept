@@ -2,6 +2,8 @@
 
 namespace Pckg\Concept\Event;
 
+use Pckg\Concept\Reflect;
+
 class Dispatcher
 {
 
@@ -88,9 +90,13 @@ class Dispatcher
             return null;
         }
 
-        $result = chain($handlers, 'handle', $args);
-
-        return $result;
+        foreach ($handlers as $handler) {
+            $handler = Reflect::create($handler);
+            Reflect::method($handler, 'handle', $args);
+        }
+        //$result = chain($handlers, 'handle', $args);
+        return $this;
+        //return $result;
     }
 
     public function destroy($event)
