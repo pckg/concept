@@ -90,13 +90,21 @@ class Dispatcher
             return null;
         }
 
+        /**
+         * Handlers are not chained anymore.
+         * They are interrupted only if handler returns false.
+         */
         foreach ($handlers as $handler) {
-            $handler = Reflect::create($handler);
-            Reflect::method($handler, 'handle', $args);
+            if (is_string($handler)) {
+                $handler = Reflect::create($handler);
+            }
+
+            if (Reflect::method($handler, 'handle', $args) === false) {
+                break;
+            }
         }
-        //$result = chain($handlers, 'handle', $args);
+
         return $this;
-        //return $result;
     }
 
     public function destroy($event)
