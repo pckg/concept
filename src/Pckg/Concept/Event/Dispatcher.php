@@ -15,7 +15,19 @@ class Dispatcher
 
     public function listen($event, $eventHandler)
     {
-        $this->listeners[$this->getEventName($event)][] = $eventHandler;
+        $hash = !is_string($eventHandler) ? spl_object_hash($eventHandler) : sha1($eventHandler);
+        $this->listeners[$this->getEventName($event)][$hash] = $eventHandler;
+
+        return $hash;
+    }
+
+    public function ignore($event, $eventHandlerKey)
+    {
+        foreach ($this->listeners[$this->getEventName($event)] ?? [] as $key => $handler) {
+            if ($key == $eventHandlerKey) {
+                unset($this->listeners[$this->getEventName($event)][$key]);
+            }
+        }
 
         return $this;
     }
@@ -99,7 +111,9 @@ class Dispatcher
                 $handler = Reflect::create($handler);
             }
 
-            if (Reflect::method($handler, 'handle', $args) === false) {
+            if (is_callable($handler)) {
+                Reflect::call($handler, $args);
+            } else if (Reflect::method($handler, 'handle', $args) === false) {
                 break;
             }
         }
