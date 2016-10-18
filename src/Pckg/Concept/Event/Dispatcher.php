@@ -113,8 +113,8 @@ class Dispatcher
 
             if (is_callable($handler)) {
                 Reflect::call($handler, $args);
-            } else if (Reflect::method($handler, 'handle', $args) === false) {
-                break;
+            } else if (is_object($handler)) {
+                Reflect::method($handler, 'handle', $args);
             }
         }
 
