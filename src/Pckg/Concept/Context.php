@@ -93,7 +93,7 @@ class Context
      */
     public function getOrDefault($key, $default = null)
     {
-        if (!isset($this->data[$key])) {
+        if (array_key_exists($key, $this->data)) {
             return $default;
         }
 
