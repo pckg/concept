@@ -67,6 +67,10 @@ class Reflect
      */
     public static function method($object, $method = '__construct', $params = [])
     {
+        if (is_string($object) && $method != '__construct') {
+            $object = static::create($object, $params);
+        }
+
         try {
             $reflectionMethod = new ReflectionMethod($object, $method);
 
