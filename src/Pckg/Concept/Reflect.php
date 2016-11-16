@@ -79,8 +79,7 @@ class Reflect
                 $result = call_user_func_array([$object, $method], $params);
 
                 return $result;
-            } catch (\Exception $e) {
-                d($e->getMessage() . ' ' . $e->getFile() . ' ' . $e->getLine());
+            } catch (Exception $e) {
                 throw $e;
             }
         }
