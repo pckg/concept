@@ -79,9 +79,10 @@ class Reflect
                 $result = call_user_func_array([$object, $method], $params);
 
                 return $result;
-            } catch (Exception $e) {
-                throw $e;
+            } catch (Exception $e2) {
+                throw $e2;
             }
+            throw $e;
         }
 
         $params = static::paramsToArray($reflectionMethod->getParameters(), is_array($params) ? $params : [$params]);
