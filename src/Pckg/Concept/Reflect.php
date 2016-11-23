@@ -10,6 +10,7 @@ use ReflectionException;
 use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionParameter;
+use Throwable;
 
 /**
  * Class Reflect
@@ -79,7 +80,7 @@ class Reflect
                 $result = call_user_func_array([$object, $method], $params);
 
                 return $result;
-            } catch (Exception $e2) {
+            } catch (Throwable $e2) {
                 throw $e2;
             }
             throw $e;
