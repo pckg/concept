@@ -108,7 +108,7 @@ class Dispatcher
          */
         foreach ($handlers as $handler) {
             if (is_string($handler)) {
-                $handler = Reflect::create($handler);
+                $handler = Reflect::create($handler, $args);
             }
 
             if (is_callable($handler)) {
