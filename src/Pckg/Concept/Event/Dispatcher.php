@@ -84,7 +84,7 @@ class Dispatcher
     public function trigger($event, array $args = [], $method = null)
     {
         $eventName = $this->getEventName($event);
-
+        
         $handlers = array_merge(
             isset($this->events[$eventName])
                 ? $this->events[$eventName]->getEventHandlers()

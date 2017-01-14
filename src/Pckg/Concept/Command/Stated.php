@@ -73,7 +73,11 @@ trait Stated
     {
         $func = $this->onErrorCallback;
 
-        return $func();
+        
+
+        return $func
+            ? $func()
+            : null;
     }
 
 }
