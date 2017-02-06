@@ -63,10 +63,17 @@ class Context
      * @return mixed
      * @throws Exception
      */
-    public function getOrCreate($class, $args = [])
+    public function getOrCreate($class, $args = [], callable $callback = null)
     {
         if (!$this->exists($class)) {
-            $this->bind($class, Reflect::create($class, $args));
+            $object = Reflect::create($class, $args);
+            $this->bind($class, $object);
+            /**
+             * Used for calling other methods like boot(), register(), ...
+             */
+            if ($callback) {
+                $callback($object);
+            }
         }
 
         return $this->data[$class];
