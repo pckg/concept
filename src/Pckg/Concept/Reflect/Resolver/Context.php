@@ -17,10 +17,8 @@ class Context implements Resolver
             if (is_object($object)) {
                 if (get_class($object) === $class || is_subclass_of($object, $class)) {
                     return $object;
-
                 } else if (in_array($class, class_implements($object))) {
                     return $object;
-
                 }
             }
         }

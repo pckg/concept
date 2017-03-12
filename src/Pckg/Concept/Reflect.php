@@ -40,21 +40,25 @@ class Reflect
             return new $class;
         }
 
-        return measure(
+        $reflectionParams = measure('Preparing ' . $class . ' parameters', function() use ($class, $params) {
+            $reflectionMethod = new ReflectionMethod($class, '__construct');
+
+            return static::paramsToArray(
+                $reflectionMethod->getParameters(),
+                is_array($params) ? $params : [$params]
+            );
+        });
+
+        $object = measure(
             'Creating ' . $class,
-            function() use ($class, $params) {
-                $reflectionMethod = new ReflectionMethod($class, '__construct');
-
-                $reflectionParams = static::paramsToArray(
-                    $reflectionMethod->getParameters(),
-                    is_array($params) ? $params : [$params]
-                );
-
+            function() use ($class, $reflectionParams) {
                 $reflection = new ReflectionClass($class);
 
                 return $reflection->newInstanceArgs($reflectionParams);
             }
         );
+
+        return $object;
     }
 
     /**
@@ -68,14 +72,11 @@ class Reflect
      */
     public static function method($object, $method = '__construct', $params = [])
     {
-        if (is_string($object) && $method != '__construct') {
-            $object = static::create($object, $params);
-        }
-
         try {
-            $reflectionMethod = new ReflectionMethod($object, $method);
-
+            $reflectionMethod = new ReflectionMethod(is_object($object) ? get_class($object) : $object, $method);
         } catch (ReflectionException $e) {
+            message('Failed reflection ' . $method . ' on ' . (is_object($object) ? get_class($object) : $object));
+
             try {
                 $result = call_user_func_array([$object, $method], $params);
 
@@ -88,20 +89,27 @@ class Reflect
 
         $params = static::paramsToArray($reflectionMethod->getParameters(), is_array($params) ? $params : [$params]);
 
-        return measure(
-            'Invoking ' . (is_object($object) ? get_class($object) : $object) . '->' . $method,
-            function() use ($reflectionMethod, $object, $params) {
-                if ($reflectionMethod->isStatic()) {
+        $result = $reflectionMethod->isStatic()
+            ? measure(
+                'Calling static method ' . (is_object($object) ? get_class($object) : $object) . '::' . $method,
+                function() use ($reflectionMethod, $object, $params) {
                     $reflectionClass = new ReflectionClass(is_object($object) ? get_class($object) : $object);
 
                     return $reflectionMethod->invokeArgs($reflectionClass, $params);
-
-                } else {
+                }
+            )
+            : measure(
+                'Calling public methods ' . (is_object($object) ? get_class($object) : $object) . '->' . $method,
+                function() use ($reflectionMethod, $object, $params, $method) {
+                    if (is_string($object) && $method != '__construct') {
+                        $object = static::create($object, $params);
+                    }
 
                     return $reflectionMethod->invokeArgs($object, $params);
                 }
-            }
-        );
+            );
+
+        return $result;
     }
 
     public static function call(callable $callable, $params = [])
@@ -150,13 +158,11 @@ class Reflect
              * Param was found by param name.
              */
             return $data[$param->name];
-
         } else if ($key && !is_numeric($key) && array_key_exists($key, $data)) {
             /**
              * Param was found by string key name.
              */
             return $data[$key];
-
         } else if (
             !$param->allowsNull() &&
             $param->getClass() &&
@@ -166,31 +172,26 @@ class Reflect
              * Class, subclass of interface was found in $data or was automatically created by resolvers.
              */
             return $object;
-
         } elseif ($param->isCallable() && $object = static::getCallableParameter($data)) {
             /**
              * Callable parameter was found in $data.
              */
             return $object;
-
         } else if ($param->isOptional()) {
             /**
              * Parameter has default value, pass it.
              */
             return $param->getDefaultValue();
-
         } else if ($key >= 0 && array_key_exists($key, $data)) {
             /**
              * Numeric index was found.
              */
             return $data[$key];
-
         } else if ($param->allowsNull()) {
             /**
              * Default value is null.
              */
             return null;
-
         }
 
         /**
@@ -220,10 +221,8 @@ class Reflect
             if (is_object($object)) {
                 if (get_class($object) === $class || is_subclass_of($object, $class)) {
                     return $object;
-
                 } else if (in_array($class, class_implements($object))) {
                     return $object;
-
                 }
             }
         }
