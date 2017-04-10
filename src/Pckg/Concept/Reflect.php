@@ -75,6 +75,9 @@ class Reflect
         try {
             $reflectionMethod = new ReflectionMethod(is_object($object) ? get_class($object) : $object, $method);
         } catch (ReflectionException $e) {
+            /**
+             * @T00D00 - document when we catch ReflectionException
+             */
             message('Failed reflection ' . $method . ' on ' . (is_object($object) ? get_class($object) : $object));
 
             try {
