@@ -33,7 +33,7 @@ class Context
     }
 
     /**
-     * @return static
+     * @return $this
      */
     public static function createInstance()
     {
