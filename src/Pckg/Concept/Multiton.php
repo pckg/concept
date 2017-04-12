@@ -7,13 +7,14 @@ trait Multiton
 
     protected static $inst = [];
 
-    public static function getInstance($index = 0)
+    public static function getInstance()
     {
-        if (!isset(static::$inst[$index])) {
-            throw new \Exception('Instance #' . $index . ' ' . __CLASS__ . ' does not exist.');
-        }
+        return end(static::$inst);
+    }
 
-        return static::$inst[$index];
+    public static function getInstances()
+    {
+        return static::$inst;
     }
 
     public static function createInstance()
