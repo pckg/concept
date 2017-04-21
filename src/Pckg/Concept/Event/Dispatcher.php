@@ -103,6 +103,13 @@ class Dispatcher
         }
 
         /**
+         * Make args array.
+         */
+        if (!is_array($args)) {
+            $args = [$args];
+        }
+
+        /**
          * Handlers are not chained anymore.
          * They are interrupted only if handler returns false.
          */
