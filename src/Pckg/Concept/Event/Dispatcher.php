@@ -118,7 +118,7 @@ class Dispatcher
                 $handler = Reflect::create($handler, $args);
             }
 
-            if (is_callable($handler)) {
+            if (is_only_callable($handler)) {
                 Reflect::call($handler, $args);
             } else if (is_object($handler)) {
                 Reflect::method($handler, 'handle', $args);

@@ -43,7 +43,7 @@ class ChainOfResponsibility
                     $chain = Reflect::create($chain);
                 }
 
-                if (is_callable($chain)) {
+                if (is_only_callable($chain)) {
                     $result = $chain(array_merge($this->args, ['next' => $next]));
 
                 } else {

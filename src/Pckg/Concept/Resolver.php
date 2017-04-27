@@ -76,9 +76,9 @@ class Resolver
     public function resolve($args = [])
     {
         if (is_string($this->resolver)) {
-            return Reflect::create($this->resolver, is_array($args) ? $args : (is_callable($args) ? $args() : $args));
+            return Reflect::create($this->resolver, is_array($args) ? $args : (is_only_callable($args) ? $args() : $args));
 
-        } else if (is_callable($this->resolver)) {
+        } else if (is_only_callable($this->resolver)) {
             return Reflect::call($this->resolver, $args);
 
         }

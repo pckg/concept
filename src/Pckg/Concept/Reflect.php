@@ -236,7 +236,7 @@ class Reflect
     protected static function getCallableParameter($data)
     {
         foreach ($data as $item) {
-            if (is_callable($item)) {
+            if (is_only_callable($item)) {
                 return $item;
             }
         }
