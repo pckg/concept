@@ -93,24 +93,18 @@ class Reflect
         $params = static::paramsToArray($reflectionMethod->getParameters(), is_array($params) ? $params : [$params]);
 
         $result = $reflectionMethod->isStatic()
-            ? measure(
-                'Calling static method ' . (is_object($object) ? get_class($object) : $object) . '::' . $method,
-                function() use ($reflectionMethod, $object, $params) {
-                    $reflectionClass = new ReflectionClass(is_object($object) ? get_class($object) : $object);
+            ? ((function() use ($reflectionMethod, $object, $params) {
+                $reflectionClass = new ReflectionClass(is_object($object) ? get_class($object) : $object);
 
-                    return $reflectionMethod->invokeArgs($reflectionClass, $params);
+                return $reflectionMethod->invokeArgs($reflectionClass, $params);
+            })())
+            : ((function() use ($reflectionMethod, $object, $params, $method) {
+                if (is_string($object) && $method != '__construct') {
+                    $object = static::create($object, $params);
                 }
-            )
-            : measure(
-                'Calling public methods ' . (is_object($object) ? get_class($object) : $object) . '->' . $method,
-                function() use ($reflectionMethod, $object, $params, $method) {
-                    if (is_string($object) && $method != '__construct') {
-                        $object = static::create($object, $params);
-                    }
 
-                    return $reflectionMethod->invokeArgs($object, $params);
-                }
-            );
+                return $reflectionMethod->invokeArgs($object, $params);
+            })());
 
         return $result;
     }
