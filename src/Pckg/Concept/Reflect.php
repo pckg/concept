@@ -72,13 +72,17 @@ class Reflect
      */
     public static function method($object, $method = '__construct', $params = [])
     {
+        if (!$object) {
+            throw new Exception('Cannot create object of no class');
+        }
+
         try {
             $reflectionMethod = new ReflectionMethod(is_object($object) ? get_class($object) : $object, $method);
         } catch (ReflectionException $e) {
             /**
              * @T00D00 - document when we catch ReflectionException
+             *         - #1 - when $object is empty
              */
-            message('Failed reflection ' . $method . ' on ' . (is_object($object) ? get_class($object) : $object));
 
             try {
                 $result = call_user_func_array([$object, $method], $params);
