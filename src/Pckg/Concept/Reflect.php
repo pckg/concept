@@ -82,6 +82,7 @@ class Reflect
             /**
              * @T00D00 - document when we catch ReflectionException
              *         - #1 - when $object is empty
+             *         - #2 - when method doesn't exist
              */
 
             try {
