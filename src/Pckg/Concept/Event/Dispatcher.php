@@ -81,8 +81,12 @@ class Dispatcher
         return isset($this->triggers[$eventName]) && $this->triggers[$eventName] >= $num;
     }
 
-    public function trigger($event, array $args = [], $method = null)
+    public function trigger($event, $args = [], $method = null)
     {
+        if (!is_array($args)) {
+            $args = [$args];
+        }
+
         $eventName = $this->getEventName($event);
         
         $handlers = array_merge(
