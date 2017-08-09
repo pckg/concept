@@ -36,10 +36,8 @@ class Dispatcher
     {
         if (is_string($event)) {
             return $event;
-
         } else if ($event instanceof AbstractEvent) {
             return $event->getName();
-
         }
 
         $finalEvent = [];
@@ -88,7 +86,7 @@ class Dispatcher
         }
 
         $eventName = $this->getEventName($event);
-        
+
         $handlers = array_merge(
             isset($this->events[$eventName])
                 ? $this->events[$eventName]->getEventHandlers()
@@ -112,6 +110,13 @@ class Dispatcher
         if (!is_array($args)) {
             $args = [$args];
         }
+
+        /**
+         * Create event object.
+         */
+        $eventObj = new Event();
+        $eventObj->setName($eventName);
+        $args[] = $eventObj;
 
         /**
          * Handlers are not chained anymore.
