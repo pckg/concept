@@ -37,4 +37,9 @@ abstract class AbstractEvent
         return $this;
     }
 
+    public function handle()
+    {
+        chain($this->handlers, 'handle');
+    }
+
 }
