@@ -9,6 +9,10 @@ trait Multiton
 
     public static function getInstance()
     {
+        if (!static::$inst) {
+            static::createInstance();
+        }
+
         return end(static::$inst);
     }
 
