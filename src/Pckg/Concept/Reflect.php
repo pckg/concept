@@ -4,8 +4,6 @@ use Exception;
 use Pckg\Concept\Reflect\Resolver;
 use Pckg\Concept\Reflect\Resolver\Basic;
 use Pckg\Concept\Reflect\Resolver\Context;
-use Pckg\Framework\Reflect\FrameworkResolver;
-use Pckg\Htmlbuilder\Resolver\FormResolver;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionFunction;

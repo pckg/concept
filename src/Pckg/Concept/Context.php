@@ -45,9 +45,6 @@ class Context
 
         $instance->bind(Dispatcher::class, new Dispatcher());
 
-        Reflect::prependResolver(new FormResolver());
-        Reflect::prependResolver(new FrameworkResolver());
-
         return $instance;
     }
 
