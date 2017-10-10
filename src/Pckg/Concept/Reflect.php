@@ -39,23 +39,16 @@ class Reflect
             return new $class;
         }
 
-        $reflectionParams = measure('Preparing ' . $class . ' parameters', function() use ($class, $params) {
-            $reflectionMethod = new ReflectionMethod($class, '__construct');
+        $reflectionMethod = new ReflectionMethod($class, '__construct');
 
-            return static::paramsToArray(
-                $reflectionMethod->getParameters(),
-                is_array($params) ? $params : [$params]
-            );
-        });
-
-        $object = measure(
-            'Creating ' . $class,
-            function() use ($class, $reflectionParams) {
-                $reflection = new ReflectionClass($class);
-
-                return $reflection->newInstanceArgs($reflectionParams);
-            }
+        $reflectionParams = static::paramsToArray(
+            $reflectionMethod->getParameters(),
+            is_array($params) ? $params : [$params]
         );
+
+        $reflection = new ReflectionClass($class);
+
+        $object = $reflection->newInstanceArgs($reflectionParams);
 
         return $object;
     }
