@@ -165,7 +165,7 @@ class Reflect
              */
             return $data[$key];
         } else if (
-            //!$param->allowsNull() &&
+            !$param->allowsNull() &&
             $param->getClass() &&
             ($class = $param->getClass()->getName()) && ($object = static::getHintedParameter($class, $data))
         ) {
