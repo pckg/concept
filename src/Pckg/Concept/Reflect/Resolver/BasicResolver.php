@@ -10,4 +10,10 @@ class BasicResolver implements Resolver
     {
         return Reflect::create($class);
     }
+
+    public function canResolve($class)
+    {
+        return false;
+    }
+
 }

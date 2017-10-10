@@ -253,12 +253,25 @@ class Reflect
     protected static function createHintedParameter($class, $data = [])
     {
         if (!static::$resolvers) {
-            static::$resolvers[] = new FrameworkResolver();
-            static::$resolvers[] = new FormResolver();
+            if (class_exists(FrameworkResolver::class)) {
+                static::$resolvers[] = new FrameworkResolver();
+                static::$resolvers[] = new FormResolver();
+            }
             static::$resolvers[] = new BasicResolver();
         }
 
         return static::resolve($class, $data);
+    }
+
+    public static function canResolve($class)
+    {
+        foreach (static::$resolvers as $resolver) {
+            if ($resolver->canResolve($class)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static function resolve($class, $data = [], $resolvers = [])
