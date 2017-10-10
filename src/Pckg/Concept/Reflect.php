@@ -165,7 +165,7 @@ class Reflect
              */
             return $data[$key];
         } else if (
-            !$param->allowsNull() &&
+            //!$param->allowsNull() &&
             $param->getClass() &&
             ($class = $param->getClass()->getName()) && ($object = static::getHintedParameter($class, $data))
         ) {
@@ -199,7 +199,8 @@ class Reflect
          * Throw exception on all other cases.
          */
         throw new Exception(
-            "Cannot find value for parameter " . $param->name . (isset($class) ? " as " . $class : "") . "."
+            "Cannot find value for parameter " . ($class ? $class . ' ' : null) . '$' . $param->name . ' in ' .
+            $param->getDeclaringClass()->getName() . '->' . $param->getDeclaringFunction()->getName() . '().'
         );
     }
 
@@ -251,9 +252,18 @@ class Reflect
      */
     protected static function createHintedParameter($class, $data = [])
     {
-        if (!static::$resolvers) {
-            static::$resolvers[] = new Context();
-            static::$resolvers[] = new Basic();
+        $staticResolvers = [Context::class, Basic::class];
+        foreach ($staticResolvers as $resolver) {
+            $found = false;
+            foreach (static::$resolvers as $res) {
+                if (get_class($res) == $resolver) {
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                static::$resolvers[] = new $resolver;
+            }
         }
 
         return static::resolve($class, $data);
