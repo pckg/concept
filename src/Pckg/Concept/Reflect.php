@@ -43,7 +43,7 @@ class Reflect
         $reflectionParams = measure('Preparing ' . $class . ' parameters', function() use ($class, $params) {
             $reflectionMethod = new ReflectionMethod($class, '__construct');
 
-            return static::paramsToArray(
+            $reflectionParams = static::paramsToArray(
                 $reflectionMethod->getParameters(),
                 is_array($params) ? $params : [$params]
             );

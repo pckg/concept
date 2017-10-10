@@ -13,6 +13,7 @@
   "autoload": {
     "psr-0": {
       "Pckg": "src\\"
-    }
+    },
+    "files": ["src/Pckg/Concept/Helper/functions.php"]
   }
 }
