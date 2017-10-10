@@ -2,7 +2,8 @@
 
 use Exception;
 use Pckg\Concept\Reflect\Resolver;
-use Pckg\Concept\Reflect\Resolver\BasicResolver;
+use Pckg\Concept\Reflect\Resolver\Basic;
+use Pckg\Concept\Reflect\Resolver\Context;
 use Pckg\Framework\Reflect\FrameworkResolver;
 use Pckg\Htmlbuilder\Resolver\FormResolver;
 use ReflectionClass;
@@ -253,11 +254,8 @@ class Reflect
     protected static function createHintedParameter($class, $data = [])
     {
         if (!static::$resolvers) {
-            if (class_exists(FrameworkResolver::class)) {
-                static::$resolvers[] = new FrameworkResolver();
-                static::$resolvers[] = new FormResolver();
-            }
-            static::$resolvers[] = new BasicResolver();
+            static::$resolvers[] = new Context();
+            static::$resolvers[] = new Basic();
         }
 
         return static::resolve($class, $data);
