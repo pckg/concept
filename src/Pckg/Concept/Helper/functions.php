@@ -2,6 +2,7 @@
 
 use DebugBar\DebugBar;
 use Pckg\Concept\Context;
+use Pckg\Concept\Event\Dispatcher;
 
 /**
  * @return Context
@@ -70,3 +71,80 @@ if (!function_exists('debugBar')) {
             : null;
     }
 }
+
+if (!function_exists('is_only_callable')) {
+    function is_only_callable($input)
+    {
+        if (is_string($input)) {
+            return false;
+        }
+
+        return is_callable($input);
+    }
+}
+
+
+
+/* event */
+
+if (!function_exists('dispatcher')) {
+    /**
+     *
+     * @return Dispatcher
+     * */
+    function dispatcher()
+    {
+        return context()->getOrCreate(Dispatcher::class);
+    }
+}
+
+if (!function_exists('trigger')) {
+    /**
+     * @param       $event
+     * @param null  $method
+     * @param array $args
+     *
+     * @return mixed|null|object
+     */
+    function trigger($event, $args = [], $method = null)
+    {
+        return dispatcher()->trigger($event, $args, $method);
+    }
+}
+
+if (!function_exists('listen')) {
+    /**
+     *
+     * @return Pckg\Concept\Event\Dispatcher
+     * */
+    function listen($event, $eventHandler)
+    {
+        return dispatcher()->listen($event, $eventHandler);
+    }
+}
+
+if (!function_exists('listenOnce')) {
+    function listenOnce($event, $eventHandler)
+    {
+        if (dispatcher()->hasListener($event, $eventHandler)) {
+            return;
+        }
+
+        return dispatcher()->listen($event, $eventHandler);
+    }
+}
+
+if (!function_exists('registerEvent')) {
+    function registerEvent(AbstractEvent $event)
+    {
+        return dispatcher()->registerEvent($event);
+    }
+}
+
+if (!function_exists('triggerEvent')) {
+    function triggerEvent($event, $args = [])
+    {
+        return dispatcher()->trigger($event, $args, 'handle');
+    }
+}
+
