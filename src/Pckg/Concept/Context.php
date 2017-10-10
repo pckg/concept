@@ -4,6 +4,8 @@ namespace Pckg\Concept;
 
 use Exception;
 use Pckg\Concept\Event\Dispatcher;
+use Pckg\Framework\Reflect\FrameworkResolver;
+use Pckg\Htmlbuilder\Resolver\FormResolver;
 
 /**
  * Simple data collector.
@@ -42,6 +44,9 @@ class Context
         $instance->bind(Context::class, $instance);
 
         $instance->bind(Dispatcher::class, new Dispatcher());
+
+        Reflect::prependResolver(new FormResolver());
+        Reflect::prependResolver(new FrameworkResolver());
 
         return $instance;
     }
