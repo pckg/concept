@@ -259,7 +259,7 @@ class Reflect
             }
         }
 
-        return static::resolve($class, $data);
+        return static::resolve($class);
     }
 
     public static function canResolve($class)
@@ -280,6 +280,8 @@ class Reflect
                 return $resolved;
             }
         }
+
+        return Reflect::resolve($class, $data);
     }
 
     public static function addResolver(Resolver $resolver)

@@ -2,6 +2,7 @@
 
 use DebugBar\DebugBar;
 use Pckg\Concept\Context;
+use Pckg\Concept\Event\AbstractEvent;
 use Pckg\Concept\Event\Dispatcher;
 
 /**
