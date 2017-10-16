@@ -84,10 +84,6 @@ if (!function_exists('is_only_callable')) {
     }
 }
 
-
-
-/* event */
-
 if (!function_exists('dispatcher')) {
     /**
      *
