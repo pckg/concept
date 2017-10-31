@@ -281,7 +281,7 @@ class Reflect
             }
         }
 
-        return Reflect::resolve($class, $data);
+        return Reflect::create($class, $data);
     }
 
     public static function addResolver(Resolver $resolver)
