@@ -177,11 +177,25 @@ class Reflect
              */
             return $param->getDefaultValue();
         } else if ($key >= 0 && array_key_exists($key, $data)) {
-            /**
-             * Numeric index was found.
-             */
-            return $data[$key];
-        } else if ($param->allowsNull()) {
+            $tempMatch = $data[$key];
+
+            if ($param->getClass()) {
+                $class = $param->getClass()->getName();
+                if ($tempMatch instanceof $class) {
+                    return $tempMatch;
+                } else {
+                    foreach ($data as $item) {
+                        if (is_object($item) && $item instanceof $class) {
+                            return $item;
+                        }
+                    }
+                }
+            } else {
+                return $tempMatch;
+            }
+        }
+
+        if ($param->allowsNull()) {
             /**
              * Default value is null.
              */
