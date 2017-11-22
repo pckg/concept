@@ -37,9 +37,14 @@ abstract class AbstractEvent
         return $this;
     }
 
+    public function getEventData()
+    {
+        return [];
+    }
+
     public function handle()
     {
-        chain($this->handlers, 'handle');
+        chain($this->handlers, 'handle', $this->getEventData());
     }
 
 }
