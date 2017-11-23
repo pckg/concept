@@ -195,6 +195,10 @@ class Reflect
             }
         }
 
+        if ($param->isDefaultValueAvailable()) {
+            return $param->getDefaultValue();
+        }
+
         if ($param->allowsNull()) {
             /**
              * Default value is null.
