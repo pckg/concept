@@ -25,6 +25,32 @@ class Context
     protected $data = [];
 
     /**
+     * @var array
+     */
+    protected $whenRequested = [];
+
+    /**
+     * @param          $service
+     * @param callable $callback
+     *
+     * @return $this
+     */
+    public function whenRequested($service, callable $callback)
+    {
+        $this->whenRequested[$service] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getWhenRequested()
+    {
+        return $this->whenRequested;
+    }
+
+    /**
      * @return array
      */
     public function getData()

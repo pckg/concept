@@ -1,5 +1,6 @@
 <?php namespace Pckg\Concept\Reflect\Resolver;
 
+use Pckg\Concept\Reflect;
 use Pckg\Concept\Reflect\Resolver;
 
 class Context implements Resolver
@@ -16,6 +17,8 @@ class Context implements Resolver
                 }
             }
         }
+
+        return in_array($class, array_keys(context()->getWhenRequested()));
     }
 
     public function resolve($class)
@@ -27,6 +30,12 @@ class Context implements Resolver
                 } else if (in_array($class, class_implements($object))) {
                     return $object;
                 }
+            }
+        }
+
+        foreach (context()->getWhenRequested() as $service => $callable) {
+            if ($service == $class) {
+                return Reflect::call($callable);
             }
         }
     }
