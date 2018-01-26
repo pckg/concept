@@ -89,19 +89,18 @@ class Reflect
 
         $params = static::paramsToArray($reflectionMethod->getParameters(), is_array($params) ? $params : [$params]);
 
-        $result = $reflectionMethod->isStatic()
-            ? ((function() use ($reflectionMethod, $object, $params) {
-                $reflectionClass = new ReflectionClass(is_object($object) ? get_class($object) : $object);
+        $result = null;
+        if ($reflectionMethod->isStatic()) {
+            $reflectionClass = new ReflectionClass(is_object($object) ? get_class($object) : $object);
 
-                return $reflectionMethod->invokeArgs($reflectionClass, $params);
-            })())
-            : ((function() use ($reflectionMethod, $object, $params, $method) {
-                if (is_string($object) && $method != '__construct') {
-                    $object = static::create($object, $params);
-                }
+            $result = $reflectionMethod->invokeArgs($reflectionClass, $params);
+        } else {
+            if (is_string($object) && $method != '__construct') {
+                $object = static::create($object, $params);
+            }
 
-                return $reflectionMethod->invokeArgs($object, $params);
-            })());
+            $result = $reflectionMethod->invokeArgs($object, $params);
+        }
 
         return $result;
     }
