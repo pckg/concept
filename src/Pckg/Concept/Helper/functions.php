@@ -27,9 +27,13 @@ if (!function_exists('context')) {
 if (!function_exists('measure')) {
     function measure($message, callable $callback)
     {
-        startMeasure($message);
+        if ($message) {
+            startMeasure($message);
+        }
         $result = $callback();
-        stopMeasure($message);
+        if ($message) {
+            stopMeasure($message);
+        }
 
         return $result;
     }
