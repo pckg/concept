@@ -28,6 +28,7 @@ class Reflect
      * @param array $params
      *
      * @throws Exception
+     * @return object|mixed
      */
     public static function create($class, $params = [])
     {
@@ -60,7 +61,9 @@ class Reflect
      * @param string $method
      * @param array  $params
      *
-     * @return mixed
+     * @return mixed|null
+     * @throws Exception
+     * @throws Throwable
      */
     public static function method($object, $method = '__construct', $params = [])
     {
