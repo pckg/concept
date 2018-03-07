@@ -293,6 +293,11 @@ class Reflect
         return false;
     }
 
+    public static function getResolvers()
+    {
+        return static::$resolvers;
+    }
+
     public static function resolve($class, $data = [], $resolvers = [])
     {
         foreach ($resolvers ?: static::$resolvers as $resolver) {
