@@ -311,13 +311,11 @@ class Reflect
 
     public static function addResolver(Resolver $resolver)
     {
-        message('Adding resolver ' . get_class($resolver));
         static::$resolvers[] = $resolver;
     }
 
     public static function prependResolver(Resolver $resolver)
     {
-        message('Prepending resolver ' . get_class($resolver));
         array_unshift(static::$resolvers, $resolver);
     }
 }
