@@ -119,11 +119,6 @@ class Context
         return $this->data[$key];
     }
 
-    public function getIfExists($key)
-    {
-        return $this->data[$key] ?? null;
-    }
-
     /**
      * @param $key
      *
