@@ -46,4 +46,10 @@ trait CreateFromMapper
         return isset($this->mapper[$key]) || in_array($key, $this->mapper);
     }
 
+    public function map($key, $class) {
+        $this->mapper[$key] = $class;
+
+        return $this;
+    }
+
 }
