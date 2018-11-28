@@ -2,8 +2,6 @@
 
 namespace Pckg\Concept;
 
-use Pckg\Concept\Reflect;
-
 class ChainOfResponsibility
 {
 
@@ -15,7 +13,7 @@ class ChainOfResponsibility
 
     protected $args = [];
 
-    public function __construct($chains = [], $runMethod = 'execute', $args = [], $firstChain = null)
+    public function __construct($chains = [], $runMethod = 'execute', $args = [], callable $firstChain = null)
     {
         $this->chains = $chains;
         $this->runMethod = $runMethod;
@@ -33,34 +31,38 @@ class ChainOfResponsibility
             return null;
         }
 
-        $next = $this->firstChain ?: function() {
-            return $this;
-        };
+        $result = $this->firstChain;
 
-        foreach (array_reverse($this->chains) as $chain) {
-            $next = function() use ($chain, $next) {
-                if (is_string($chain)) {
-                    $chain = Reflect::create($chain);
-                }
+        $ok = false;
+        foreach ($this->chains as $chain) {
+            if (is_string($chain)) {
+                $chain = Reflect::create($chain);
+            }
 
-                if (is_only_callable($chain)) {
-                    $result = $chain(array_merge($this->args, ['next' => $next]));
+            $ok = false;
+            if (is_only_callable($chain)) {
+                $result = $chain(array_merge($this->args, [
+                    'next' => function() use (&$ok) {
+                        return $ok = true;
+                    },
+                ]));
 
-                } else {
-                    $result = Reflect::method($chain, $this->runMethod, array_merge($this->args, ['next' => $next]));
+            } else {
+                $result = Reflect::method($chain, $this->runMethod, array_merge($this->args, [
+                    'next' => function() use (&$ok) {
+                        return $ok = true;
+                    },
+                ]));
+            }
 
-                }
-
+            if (!$ok) {
                 return $result;
-            };
+            }
         }
 
-        //startMeasure('Chain: ' . $this->runMethod . '()');
-        $result = $next();
+        $firstChain = $this->firstChain;
 
-        //stopMeasure('Chain: ' . $this->runMethod . '()');
-
-        return $result;
+        return $firstChain ? $firstChain() : true;
     }
 
     public function setRunMethod($runMethod)
