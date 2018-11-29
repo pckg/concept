@@ -25,12 +25,12 @@ if (!function_exists('context')) {
 }
 
 if (!function_exists('measure')) {
-    function measure($message, callable $callback)
+    function measure($message, callable $callback = null)
     {
         if ($message) {
             startMeasure($message);
         }
-        $result = $callback();
+        $result = $callback ? $callback() : null;
         if ($message) {
             stopMeasure($message);
         }
