@@ -25,7 +25,7 @@ if (!function_exists('context')) {
 }
 
 if (!function_exists('measure')) {
-    function measure($message, callable $callback = null)
+    function measure($message, callable $callback = null, $limit = null)
     {
         if ($message) {
             startMeasure($message);
@@ -156,3 +156,19 @@ if (!function_exists('object_implements')) {
     }
 }
 
+if (!function_exists('report')) {
+    function report(...$data)
+    {
+        foreach ($data as $val) {
+            if (is_string($val)) {
+                error_log(date('Y-m-d H:i:s') . ' ' . $val);
+                continue;
+            }
+
+            if ($val instanceof Throwable) {
+                error_log(date('Y-m-d H:i:s') . ' ' . 'EXCEPTION: ' . exception($val));
+                continue;
+            }
+        }
+    }
+}
