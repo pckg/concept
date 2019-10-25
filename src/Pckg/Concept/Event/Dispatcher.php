@@ -15,6 +15,10 @@ class Dispatcher
 
     public function listen($event, $eventHandler)
     {
+        if (!$eventHandler) {
+            return;
+        }
+        
         $hash = !is_string($eventHandler) ? spl_object_hash($eventHandler) : sha1($eventHandler);
         $this->listeners[$this->getEventName($event)][$hash] = $eventHandler;
 

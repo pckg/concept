@@ -59,22 +59,22 @@ trait Stated
     /**
      * @return mixed
      */
-    public function successful()
+    public function successful($data = null)
     {
         $func = $this->onSuccessCallback;
 
-        return $func();
+        return $func($data);
     }
 
     /**
      * @return mixed
      */
-    public function error()
+    public function error($data = null)
     {
         $func = $this->onErrorCallback;
         
         return $func
-            ? $func()
+            ? $func($data)
             : null;
     }
 
