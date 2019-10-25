@@ -41,18 +41,22 @@ class ChainOfResponsibility
 
             $ok = false;
             if (is_only_callable($chain)) {
+                startMeasure('Callable chain');
                 $result = $chain(array_merge($this->args, [
                     'next' => function() use (&$ok) {
                         return $ok = true;
                     },
                 ]));
+                stopMeasure('Callable chain');
 
             } else {
+                startMeasure('Chain: ' . get_class($chain));
                 $result = Reflect::method($chain, $this->runMethod, array_merge($this->args, [
                     'next' => function() use (&$ok) {
                         return $ok = true;
                     },
                 ]));
+                stopMeasure('Chain: ' . get_class($chain));
             }
 
             if (!$ok) {
