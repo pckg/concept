@@ -265,7 +265,7 @@ class Reflect
      */
     protected static function createHintedParameter($class, $data = [])
     {
-        $staticResolvers = [Context::class, Basic::class];
+        $staticResolvers = [Basic::class];
         foreach ($staticResolvers as $resolver) {
             $found = false;
             foreach (static::$resolvers as $res) {
