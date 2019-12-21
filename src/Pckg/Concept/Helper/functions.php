@@ -152,7 +152,9 @@ if (!function_exists('triggerEvent')) {
 if (!function_exists('object_implements')) {
     function object_implements($object, $interface)
     {
-        return (is_object($object) || is_string($object)) && in_array($interface, class_implements($object));
+        return (is_object($object) || is_string($object))
+            && class_exists(is_string($object) ? $object : get_class($object))
+            && in_array($interface, class_implements($object));
     }
 }
 
