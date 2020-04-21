@@ -234,7 +234,9 @@ class Reflect
 
         foreach ($data as $object) {
             if (is_object($object)) {
-                if (get_class($object) === $class || is_subclass_of($object, $class)) {
+                if (get_class($object) === $class) {
+                    return $object;
+                } elseif (is_subclass_of($object, $class)) {
                     return $object;
                 } else if (in_array($class, class_implements($object))) {
                     return $object;
@@ -269,7 +271,7 @@ class Reflect
         foreach ($staticResolvers as $resolver) {
             $found = false;
             foreach (static::$resolvers as $res) {
-                if (get_class($res) == $resolver) {
+                if (get_class($res) === $resolver) {
                     $found = true;
                     break;
                 }
