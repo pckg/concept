@@ -152,6 +152,19 @@ class Context
      *
      * @return $this
      */
+    public function unbind($key)
+    {
+        unset($this->data[$key]);
+
+        return $this;
+    }
+
+    /**
+     * @param $key
+     * @param $value
+     *
+     * @return $this
+     */
     public function bindIfNot($key, $value)
     {
         if (!isset($this->data[$key])) {
