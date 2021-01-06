@@ -199,4 +199,26 @@ class Context
         throw new Exception("Key $key not found in context");
     }
 
+    public function mock($object, callable $task, string $bind = null)
+    {
+        if (!$bind) {
+            $bind = get_class($object);
+        }
+
+        $original = context()->get($bind);
+        context()->bind($bind, $object);
+
+        try {
+            $response = $task($object, $original);
+        } catch (\Throwable $e) {
+            context()->bind($bind, $original);
+            ddd(exception($e));
+            return;
+        }
+
+        context()->bind($bind, $original);
+
+        return $response;
+    }
+
 }
