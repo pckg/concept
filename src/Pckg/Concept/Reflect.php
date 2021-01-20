@@ -168,7 +168,7 @@ class Reflect
              * Class, subclass of interface was found in $data or was automatically created by resolvers.
              */
             return $object;
-        } elseif ($param->getType()->getName() === 'callable' && $object = static::getCallableParameter($data)) {
+        } elseif ($param->getType() && $param->getType()->getName() === 'callable' && $object = static::getCallableParameter($data)) {
             /**
              * Callable parameter was found in $data.
              */
