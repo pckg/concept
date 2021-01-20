@@ -161,8 +161,8 @@ class Reflect
             return $data[$key];
         } else if (
             !$param->allowsNull() &&
-            $param->getClass() &&
-            ($class = $param->getClass()->getName()) && ($object = static::getHintedParameter($class, $data))
+            $param->getType() &&
+            ($class = $param->getType()->getName()) && !$param->getType()->isBuiltin() && ($object = static::getHintedParameter($class, $data))
         ) {
             /**
              * Class, subclass of interface was found in $data or was automatically created by resolvers.
@@ -181,8 +181,8 @@ class Reflect
         } else if ($key >= 0 && array_key_exists($key, $data)) {
             $tempMatch = $data[$key];
 
-            if ($param->getClass()) {
-                $class = $param->getClass()->getName();
+            if ($param->getType()) {
+                $class = $param->getType()->getName();
                 if ($tempMatch instanceof $class) {
                     return $tempMatch;
                 } else {
