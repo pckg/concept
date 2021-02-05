@@ -6,7 +6,6 @@ use Pckg\Concept\ChainOfResponsibility\Next;
 
 abstract class AbstractEvent
 {
-
     use Next;
 
     protected $handlers = [];
@@ -46,5 +45,4 @@ abstract class AbstractEvent
     {
         chain($this->handlers, 'handle', $this->getEventData());
     }
-
 }

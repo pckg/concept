@@ -1,4 +1,6 @@
-<?php namespace Pckg\Concept;
+<?php
+
+namespace Pckg\Concept;
 
 use Exception;
 use Pckg\Concept\Reflect\Resolver;
@@ -37,7 +39,7 @@ class Reflect
         }
 
         if (!method_exists($class, '__construct')) {
-            return new $class;
+            return new $class();
         }
 
         $reflectionMethod = new ReflectionMethod($class, '__construct');
@@ -277,7 +279,7 @@ class Reflect
                 }
             }
             if (!$found) {
-                static::$resolvers[] = new $resolver;
+                static::$resolvers[] = new $resolver();
             }
         }
 

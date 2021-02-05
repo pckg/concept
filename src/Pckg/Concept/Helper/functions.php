@@ -9,6 +9,7 @@ use Pckg\Concept\Event\Dispatcher;
  * @return Context
  * @throws Exception
  */
+
 if (!function_exists('context')) {
     function context($key = null, $val = null)
     {

@@ -41,10 +41,8 @@ class AbstractObject
     {
         if (!is_string($this->return)) {
             return $this->return;
-
         } else if (method_exists($this, 'handleReturn' . ucfirst($this->return))) {
             return $this->{'handleReturn' . ucfirst($this->return)}($method, $args);
-
         }
 
         $up = new \Exception('No return method for final call on chaining');
@@ -118,7 +116,7 @@ class AbstractObject
      */
     protected function handleReturnFirstObject($method, $args)
     {
-        foreach ($args AS $arg) {
+        foreach ($args as $arg) {
             if (is_object($arg)) {
                 if ($arg instanceof AbstractObject) {
                     return $arg->getElement();
@@ -165,5 +163,4 @@ class AbstractObject
     {
         return null;
     }
-
 }

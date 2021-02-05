@@ -13,7 +13,6 @@ use Pckg\Concept\Event\Dispatcher;
  */
 class Context
 {
-
     use Multiton, Mapper {
         Multiton::createInstance as parentCreateInstance;
         Multiton::getInstance as parentGetInstance;
@@ -220,5 +219,4 @@ class Context
 
         return $response;
     }
-
 }

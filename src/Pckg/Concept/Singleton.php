@@ -20,5 +20,4 @@ trait Singleton
     {
         return new static();
     }
-
 }

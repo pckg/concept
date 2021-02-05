@@ -6,9 +6,8 @@ use Pckg\Concept\ChainOfResponsibility\Next;
 
 abstract class AbstractChainOfReponsibility
 {
-
-    use Next, CanHandle;
+    use Next;
+    use CanHandle;
 
     protected $runMethod = null;
-
 }

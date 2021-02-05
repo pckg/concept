@@ -29,7 +29,7 @@ trait CreateFromMapper
 
     public function createArray($arrClasses, $params = [])
     {
-        foreach ($arrClasses AS &$class) {
+        foreach ($arrClasses as &$class) {
             $class = $this->create($class, $params);
         }
 
@@ -46,10 +46,10 @@ trait CreateFromMapper
         return isset($this->mapper[$key]) || in_array($key, $this->mapper);
     }
 
-    public function map($key, $class) {
+    public function map($key, $class)
+    {
         $this->mapper[$key] = $class;
 
         return $this;
     }
-
 }

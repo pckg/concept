@@ -28,5 +28,4 @@ trait CanHandle
     {
         $this->methods = array_unique(array_merge($this->methods ?? [], $arrMethods));
     }
-
 }

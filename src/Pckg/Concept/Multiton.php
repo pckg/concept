@@ -36,5 +36,4 @@ trait Multiton
 
         return count(self::$inst) - 1;
     }
-
 }

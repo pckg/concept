@@ -13,5 +13,4 @@ trait Mapper
             ? $this->mapper[$key]
             : null;
     }
-
 }

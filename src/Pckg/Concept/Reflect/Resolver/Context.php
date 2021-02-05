@@ -1,4 +1,6 @@
-<?php namespace Pckg\Concept\Reflect\Resolver;
+<?php
+
+namespace Pckg\Concept\Reflect\Resolver;
 
 use Pckg\Concept\Reflect;
 use Pckg\Concept\Reflect\Resolver;
@@ -39,5 +41,4 @@ class Context implements Resolver
             }
         }
     }
-
 }

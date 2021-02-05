@@ -18,7 +18,7 @@ class Dispatcher
         if (!$eventHandler) {
             return;
         }
-        
+
         $hash = !is_string($eventHandler) ? spl_object_hash($eventHandler) : sha1($eventHandler);
         $this->listeners[$this->getEventName($event)][$hash] = $eventHandler;
 
@@ -45,7 +45,7 @@ class Dispatcher
         }
 
         $finalEvent = [];
-        foreach ($event AS $e) {
+        foreach ($event as $e) {
             if (is_object($e)) {
                 $finalEvent[] = get_class($e);
                 $finalEvent[] = spl_object_hash($e);
@@ -153,5 +153,4 @@ class Dispatcher
 
         return null;
     }
-
 }

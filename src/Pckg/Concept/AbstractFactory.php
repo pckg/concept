@@ -6,7 +6,6 @@ use Pckg\Concept\Factory\CreateFromMapper;
 
 class AbstractFactory
 {
-
     use CreateFromMapper {
         CreateFromMapper::create as parentCreate;
     }
@@ -25,7 +24,7 @@ class AbstractFactory
         $element = $this->parentCreate($key, $params);
 
         if (is_array($element)) {
-            foreach ($element AS $key => $e) {
+            foreach ($element as $key => $e) {
                 $this->applyServicesOnCreation($key, $e);
             }
         } else {
@@ -67,5 +66,4 @@ class AbstractFactory
     {
         return array_keys($this->mapper);
     }
-
 }

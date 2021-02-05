@@ -1,4 +1,6 @@
-<?php namespace Pckg\Concept;
+<?php
+
+namespace Pckg\Concept;
 
 use Exception;
 
@@ -77,13 +79,10 @@ class Resolver
     {
         if (is_string($this->resolver)) {
             return Reflect::create($this->resolver, is_array($args) ? $args : (is_only_callable($args) ? $args() : $args));
-
         } else if (is_only_callable($this->resolver)) {
             return Reflect::call($this->resolver, $args);
-
         }
 
         throw new Exception("Resolver is not set!");
     }
-
 }
