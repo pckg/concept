@@ -5,6 +5,8 @@ namespace Pckg\Concept;
 trait CanHandle
 {
 
+    protected $methods = [];
+
     public function canHandle($method)
     {
         return method_exists($this, $method);
@@ -12,10 +14,6 @@ trait CanHandle
 
     public function getMethods()
     {
-        if (!isset($this->methods)) {
-            $this->methods = [];
-        }
-
         return $this->methods;
     }
 

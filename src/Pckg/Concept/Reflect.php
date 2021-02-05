@@ -214,7 +214,7 @@ class Reflect
          * Throw exception on all other cases.
          */
         throw new Exception(
-            "Cannot find value for parameter " . ($class ? $class . ' ' : null) . '$' . $param->name . ' in ' .
+            "Cannot find value for parameter " . (isset($class) ? $class . ' ' : null) . '$' . $param->name . ' in ' .
             $param->getDeclaringClass()->getName() . '->' . $param->getDeclaringFunction()->getName() . '().'
         );
     }

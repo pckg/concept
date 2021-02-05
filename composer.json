@@ -10,7 +10,8 @@
     }
   ],
   "require-dev": {
-    "pckg-app/frontend-dev": "dev-master"
+    "pckg-app/frontend-dev": "dev-master",
+    "pckg/framework": "dev-master"
   },
   "autoload": {
     "psr-0": {

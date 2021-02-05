@@ -13,6 +13,8 @@ class Dispatcher
 
     protected $triggered = [];
 
+    protected $triggers = [];
+
     public function listen($event, $eventHandler)
     {
         if (!$eventHandler) {

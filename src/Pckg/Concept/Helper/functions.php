@@ -5,12 +5,11 @@ use Pckg\Concept\Context;
 use Pckg\Concept\Event\AbstractEvent;
 use Pckg\Concept\Event\Dispatcher;
 
-/**
- * @return Context
- * @throws Exception
- */
-
 if (!function_exists('context')) {
+    /**
+     * @return Context
+     * @throws Exception
+     */
     function context($key = null, $val = null)
     {
         $context = Context::getInstance();
