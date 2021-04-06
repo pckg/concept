@@ -8,9 +8,9 @@ use Pckg\Concept\Reflect\Resolver;
 class Basic implements Resolver
 {
 
-    public function resolve($class)
+    public function resolve($class, $data = [])
     {
-        return Reflect::create($class);
+        return Reflect::create($class, $data);
     }
 
     public function canResolve($class)

@@ -305,7 +305,7 @@ class Reflect
     public static function resolve($class, $data = [], $resolvers = [])
     {
         foreach ($resolvers ?: static::$resolvers as $resolver) {
-            if ($resolved = $resolver->resolve($class)) {
+            if ($resolved = $resolver->resolve($class, $data)) {
                 return $resolved;
             }
         }

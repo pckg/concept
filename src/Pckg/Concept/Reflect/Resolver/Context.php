@@ -23,7 +23,7 @@ class Context implements Resolver
         return in_array($class, array_keys(context()->getWhenRequested()));
     }
 
-    public function resolve($class)
+    public function resolve($class, $data = [])
     {
         foreach (context()->getData() as $object) {
             if (is_object($object)) {
@@ -37,7 +37,7 @@ class Context implements Resolver
 
         foreach (context()->getWhenRequested() as $service => $callable) {
             if ($service == $class) {
-                return Reflect::call($callable);
+                return Reflect::call($callable, $data);
             }
         }
     }
