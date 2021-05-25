@@ -29,9 +29,13 @@ class Dispatcher
 
     public function ignore($event, $eventHandlerKey)
     {
-        foreach ($this->listeners[$this->getEventName($event)] ?? [] as $key => $handler) {
-            if ($key == $eventHandlerKey) {
-                unset($this->listeners[$this->getEventName($event)][$key]);
+        $eventName = $this->getEventName($event);
+        foreach ($this->listeners[$eventName] ?? [] as $key => $handler) {
+            if ($key === $eventHandlerKey) {
+                unset($this->listeners[$eventName][$key]);
+                if (!$this->listeners[$eventName]) {
+                    unset($this->listeners[$eventName]);
+                }
             }
         }
 
@@ -93,14 +97,10 @@ class Dispatcher
             isset($this->events[$eventName])
                 ? $this->events[$eventName]->getEventHandlers()
                 : [],
-            isset($this->listeners[$eventName])
-                ? $this->listeners[$eventName]
-                : []
+            $this->listeners[$eventName] ?? []
         );
 
-        $this->triggers[$eventName] = isset($this->triggers[$eventName])
-            ? $this->triggers[$eventName] + 1
-            : 1;
+        $this->triggers[$eventName] = ($this->triggers[$eventName] ?? 0) + 1;
 
         if (!$handlers) {
             return null;

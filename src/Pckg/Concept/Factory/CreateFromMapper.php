@@ -8,7 +8,7 @@ use Pckg\Concept\Reflect;
 trait CreateFromMapper
 {
 
-    protected $mapper;
+    protected array $mapper = [];
 
     public function create($key, $params = [])
     {
@@ -24,7 +24,7 @@ trait CreateFromMapper
             throw new Exception($key . " isn't mapped in " . static::CLASS);
         }
 
-        return Reflect::create(isset($this->mapper[$key]) ? $this->mapper[$key] : $key, $params);
+        return Reflect::create($this->mapper[$key] ?? $key, $params);
     }
 
     public function createArray($arrClasses, $params = [])

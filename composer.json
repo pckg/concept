@@ -11,14 +11,17 @@
   ],
   "require-dev": {
     "pckg-app/frontend-dev": "dev-master",
-    "pckg/framework": "dev-master"
+    "pckg/framework": "dev-master-yoda",
+    "pckg/htmlbuilder": "dev-master",
+    "pckg/manager": "dev-master"
   },
   "autoload": {
     "psr-0": {
       "Pckg": "src\\"
     },
     "files": [
-      "src/Pckg/Concept/Helper/functions.php"
+      "src/Pckg/Concept/Helper/functions.php",
+      "src/Pckg/Concept/Helper/functions_bc.php"
     ]
   },
   "scripts": {

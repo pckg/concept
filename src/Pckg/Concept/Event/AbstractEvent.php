@@ -8,13 +8,15 @@ abstract class AbstractEvent
 {
     use Next;
 
-    protected $handlers = [];
+    protected array $handlers = [];
 
-    protected $name;
+    protected string $name;
+
+    protected array $eventData = [];
 
     public function getName()
     {
-        return $this->name;
+        return $this->name ?? null;
     }
 
     public function setName($name)
@@ -36,9 +38,16 @@ abstract class AbstractEvent
         return $this;
     }
 
+    public function setEventData(array $data)
+    {
+        $this->eventData = $data;
+
+        return $this;
+    }
+
     public function getEventData()
     {
-        return [];
+        return $this->eventData;
     }
 
     public function handle()
