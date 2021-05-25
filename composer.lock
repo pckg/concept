@@ -2123,12 +2123,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pckg/framework.git",
-                "reference": "c9ead66eaf9836888e8ff8ae8026e5b544b85270"
+                "reference": "a3838ebe2c605a929e8442c2163ddbdf11c59711"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pckg/framework/zipball/c9ead66eaf9836888e8ff8ae8026e5b544b85270",
-                "reference": "c9ead66eaf9836888e8ff8ae8026e5b544b85270",
+                "url": "https://api.github.com/repos/pckg/framework/zipball/a3838ebe2c605a929e8442c2163ddbdf11c59711",
+                "reference": "a3838ebe2c605a929e8442c2163ddbdf11c59711",
                 "shasum": ""
             },
             "require": {
@@ -2185,7 +2185,7 @@
                 "issues": "https://github.com/pckg/framework/issues",
                 "source": "https://github.com/pckg/framework/tree/master-yoda"
             },
-            "time": "2021-05-25T12:04:57+00:00"
+            "time": "2021-05-25T12:22:49+00:00"
         },
         {
             "name": "pckg/htmlbuilder",
