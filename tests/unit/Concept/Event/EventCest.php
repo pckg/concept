@@ -3,9 +3,11 @@
 namespace Test\Concept\Event;
 
 use Pckg\Concept\Event\Event;
+use Pckg\Framework\Test\Codeception\Cest;
 
-class EventCest extends \Pckg\Framework\Test\Codeception\Cest
+class EventCest
 {
+    use Cest;
 
     public function testDefaultEvent()
     {

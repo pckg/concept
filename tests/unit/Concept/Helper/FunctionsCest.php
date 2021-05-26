@@ -4,8 +4,9 @@ namespace Test\Concept\Helper;
 
 use Pckg\Framework\Test\Codeception\Cest;
 
-class FunctionsCest extends Cest
+class FunctionsCest
 {
+    use Cest;
 
     public function testContext()
     {

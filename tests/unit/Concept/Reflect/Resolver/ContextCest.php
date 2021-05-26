@@ -11,8 +11,9 @@ use Pckg\Framework\Response;
 use Pckg\Framework\Router;
 use Pckg\Framework\Test\Codeception\Cest;
 
-class ContextCest extends Cest
+class ContextCest
 {
+    use Cest;
 
     public function testCanResolveSystemDependencies()
     {

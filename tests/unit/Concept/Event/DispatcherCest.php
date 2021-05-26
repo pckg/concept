@@ -3,9 +3,11 @@
 namespace Test\Concept\Event;
 
 use Pckg\Concept\Event\Dispatcher;
+use Pckg\Framework\Test\Codeception\Cest;
 
-class DispatcherCest extends \Pckg\Framework\Test\Codeception\Cest
+class DispatcherCest
 {
+    use Cest;
 
     public function testCanListenAsCallback()
     {
