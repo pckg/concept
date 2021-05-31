@@ -10,7 +10,7 @@ abstract class AbstractEvent
 
     protected array $handlers = [];
 
-    protected string $name;
+    protected $name;
 
     protected array $eventData = [];
 
