@@ -26,9 +26,6 @@ class Reflect
     /**
      * Create $class with parameters provided in $params variable and getData() method.
      *
-     * @param       $class
-     * @param array $params
-     *
      * @throws Exception
      * @return object|mixed
      */
@@ -59,10 +56,6 @@ class Reflect
     /**
      * Calls $method on $object with parameters provided in $params variable and getData method().
      *
-     * @param        $object
-     * @param string $method
-     * @param array  $params
-     *
      * @return mixed|null
      * @throws Exception
      * @throws Throwable
@@ -89,7 +82,6 @@ class Reflect
             } catch (Throwable $e2) {
                 throw $e2;
             }
-            throw $e;
         }
 
         $params = static::paramsToArray($reflectionMethod->getParameters(), is_array($params) ? $params : [$params]);
@@ -122,9 +114,6 @@ class Reflect
     /**
      * Transforms array of ReflectionParameters into array of arguments.
      *
-     * @param       $params
-     * @param array $data
-     *
      * @return array
      * @throws Exception
      */
@@ -142,50 +131,63 @@ class Reflect
     /**
      * Call correct strategy for finding $param value.
      *
-     * @param ReflectionParameter $param
-     * @param array               $data
-     * @param null                $key
-     *
      * @return mixed|null|object
      * @throws Exception
      */
     protected static function getParamValue(ReflectionParameter $param, $data = [], $key = null)
     {
+        /**
+         * Param was found by param name.
+         */
         if (array_key_exists($param->name, $data)) {
-            /**
-             * Param was found by param name.
-             */
             return $data[$param->name];
-        } else if ($key && !is_numeric($key) && array_key_exists($key, $data)) {
-            /**
-             * Param was found by string key name.
-             */
+        }
+
+        /**
+         * Param was found by string key name.
+         */
+        if ($key && !is_numeric($key) && array_key_exists($key, $data)) {
             return $data[$key];
-        } else if (
+        }
+
+        $paramType = $param->getType();
+        // @phpstan-ignore-next-line
+        $paramTypeName = $paramType?->getName();
+        // @phpstan-ignore-next-line
+        $paramTypeBuiltIn = $paramType?->isBuiltin();
+
+        /**
+         * Class, subclass of interface was found in $data or was automatically created by resolvers.
+         */
+        if (
             !$param->allowsNull() &&
-            $param->getType() &&
-            ($class = $param->getType()->getName()) && !$param->getType()->isBuiltin() && ($object = static::getHintedParameter($class, $data))
+            $paramType &&
+            ($class = $paramTypeName) &&
+            !$paramTypeBuiltIn && ($object = static::getHintedParameter($class, $data))
         ) {
-            /**
-             * Class, subclass of interface was found in $data or was automatically created by resolvers.
-             */
             return $object;
-        } elseif ($param->getType() && $param->getType()->getName() === 'callable' && $object = static::getCallableParameter($data)) {
-            /**
-             * Callable parameter was found in $data.
-             */
+        }
+
+        /**
+         * Callable parameter was found in $data.
+         */
+        if ($paramType && $paramTypeName === 'callable' && $object = static::getCallableParameter($data)) {
             return $object;
-        } else if ($param->isOptional()) {
-            /**
-             * Parameter has default value, pass it.
-             */
+        }
+
+        /**
+         * Parameter has default value, pass it.
+         */
+        if ($param->isOptional()) {
             return $param->getDefaultValue();
-        } else if ($key >= 0 && array_key_exists($key, $data)) {
+        }
+
+        if ($key >= 0 && array_key_exists($key, $data)) {
             $tempMatch = $data[$key];
 
-            if ($param->getType()) {
-                $class = $param->getType()->getName();
-                if (!$param->getType()->isBuiltin() && $tempMatch instanceof $class) {
+            if ($paramType) {
+                $class = $paramTypeName;
+                if (!$paramTypeBuiltIn && $tempMatch instanceof $class) {
                     return $tempMatch;
                 } else {
                     foreach ($data as $item) {
@@ -222,10 +224,7 @@ class Reflect
     /**
      * Searches for instance of $class in $data and getData().
      *
-     * @param $class
-     * @param $data
-     *
-     * @return object
+     * @return object|null
      * @throws Exception
      */
     protected static function getHintedParameter($class, $data)
@@ -238,8 +237,9 @@ class Reflect
             if (is_object($object)) {
                 if (get_class($object) === $class) {
                     return $object;
-                } elseif (is_subclass_of($object, $class)) {
+                } else if (is_subclass_of($object, $class)) {
                     return $object;
+                    // @phpstan-ignore-next-line
                 } else if (in_array($class, class_implements($object))) {
                     return $object;
                 }
@@ -261,9 +261,6 @@ class Reflect
     }
 
     /**
-     * @param $class
-     * @param $data
-     *
      * @return object
      * @throws Exception
      */

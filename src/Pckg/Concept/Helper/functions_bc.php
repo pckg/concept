@@ -68,10 +68,6 @@ if (!function_exists('dispatcher')) {
 
 if (!function_exists('trigger')) {
     /**
-     * @param       $event
-     * @param null $method
-     * @param array $args
-     *
      * @return mixed|null|object
      */
     function trigger($event, $args = [], $method = null)

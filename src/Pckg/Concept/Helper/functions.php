@@ -62,7 +62,7 @@ namespace Pckg\Concept\Helper {
     }
 
     /**
-     * @return DebugBar
+     * @return DebugBar|null
      */
     function debugBar()
     {
@@ -90,10 +90,6 @@ namespace Pckg\Concept\Helper {
     }
 
     /**
-     * @param       $event
-     * @param null $method
-     * @param array $args
-     *
      * @return mixed|null|object
      */
     function trigger($event, $args = [], $method = null)

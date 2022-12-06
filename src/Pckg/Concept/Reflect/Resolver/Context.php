@@ -12,6 +12,7 @@ class Context implements Resolver
     {
         foreach (context()->getData() as $object) {
             if (is_object($object)) {
+                // @phpstan-ignore-next-line
                 if (get_class($object) === $class || is_subclass_of($object, $class)) {
                     return true;
                 } else if (in_array($class, class_implements($object))) {
@@ -27,6 +28,7 @@ class Context implements Resolver
     {
         foreach (context()->getData() as $object) {
             if (is_object($object)) {
+                // @phpstan-ignore-next-line
                 if (get_class($object) === $class || is_subclass_of($object, $class)) {
                     return $object;
                 } else if (in_array($class, class_implements($object))) {

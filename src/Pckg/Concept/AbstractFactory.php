@@ -13,13 +13,12 @@ class AbstractFactory
     protected $services = [];
 
     /**
-     * @param       $key
+     * @param string $key
      * @param array $params
      *
-     * @return $key
      * @throws \Exception
      */
-    public function create($key, $params = [])
+    public function create(string $key, $params = [])
     {
         $element = $this->parentCreate($key, $params);
 

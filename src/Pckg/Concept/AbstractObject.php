@@ -7,7 +7,7 @@ namespace Pckg\Concept;
  *
  * @package Pckg\Concept
  */
-class AbstractObject
+abstract class AbstractObject
 {
 
     /**
@@ -30,9 +30,11 @@ class AbstractObject
      */
     protected $return = 'firstObject';
 
+    abstract public function getElement();
+
     /**
-     * @param $method
-     * @param $args
+     * @param string $method
+     * @param array $args
      *
      * @return string
      * @throws \Exception
@@ -51,8 +53,6 @@ class AbstractObject
     }
 
     /**
-     * @param $return
-     *
      * @return $this
      */
     public function setReturn($return)
@@ -71,7 +71,7 @@ class AbstractObject
     }
 
     /**
-     * @param $args
+     * @param array $args
      *
      * @return $this
      */
@@ -83,12 +83,9 @@ class AbstractObject
     }
 
     /**
-     * @param      $key
-     * @param null $default
-     *
      * @return null
      */
-    public function getArg($key, $default = null)
+    public function getArg(string $key, $default = null)
     {
         return isset($this->args[$key])
             ? $this->args[$key]
@@ -96,12 +93,9 @@ class AbstractObject
     }
 
     /**
-     * @param $key
-     * @param $value
-     *
      * @return $this
      */
-    public function setArg($key, $value)
+    public function setArg(string $key, $value)
     {
         $this->args[$key] = $value;
 
@@ -109,10 +103,7 @@ class AbstractObject
     }
 
     /**
-     * @param $method
-     * @param $args
-     *
-     * @return bool|null
+     * @return bool|mixed
      */
     protected function handleReturnFirstObject($method, $args)
     {
@@ -130,10 +121,7 @@ class AbstractObject
     }
 
     /**
-     * @param $method
-     * @param $args
-     *
-     * @return bool|null
+     * @return bool|mixed
      */
     protected function handleReturnResult($method, $args)
     {

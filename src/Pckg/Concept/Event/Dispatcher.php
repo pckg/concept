@@ -72,6 +72,11 @@ class Dispatcher
         return $this;
     }
 
+    public function hasListener($event, $listener)
+    {
+        return ($this->listeners[$this->getEventName($event)] ?? null) === $listener && $listener;
+    }
+
     public function hasListeners($event)
     {
         return isset($this->listeners[$this->getEventName($event)]);

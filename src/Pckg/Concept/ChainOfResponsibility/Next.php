@@ -16,8 +16,6 @@ trait Next
     protected $next = null;
 
     /**
-     * @param $next
-     *
      * @return $this
      */
     public function setNext($next)
