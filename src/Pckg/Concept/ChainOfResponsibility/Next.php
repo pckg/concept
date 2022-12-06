@@ -9,7 +9,6 @@ namespace Pckg\Concept\ChainOfResponsibility;
  */
 trait Next
 {
-
     /**
      * @var null
      */

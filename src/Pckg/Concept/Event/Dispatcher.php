@@ -6,7 +6,6 @@ use Pckg\Concept\Reflect;
 
 class Dispatcher
 {
-
     protected $listeners = [];
 
     protected $events = [];

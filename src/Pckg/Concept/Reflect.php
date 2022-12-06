@@ -20,7 +20,6 @@ use Throwable;
  */
 class Reflect
 {
-
     protected static $resolvers = [];
 
     /**

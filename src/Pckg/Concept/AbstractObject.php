@@ -9,7 +9,6 @@ namespace Pckg\Concept;
  */
 abstract class AbstractObject
 {
-
     /**
      * @var array
      */

@@ -4,7 +4,6 @@ namespace Pckg\Concept;
 
 trait Singleton
 {
-
     protected static $inst = null;
 
     public static function getInstance()

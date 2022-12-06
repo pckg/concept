@@ -4,7 +4,6 @@ namespace Pckg\Concept;
 
 trait Mapper
 {
-
     protected array $mapper = [];
 
     public function getMapped($key)

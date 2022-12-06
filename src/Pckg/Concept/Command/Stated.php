@@ -9,7 +9,6 @@ namespace Pckg\Concept\Command;
  */
 trait Stated
 {
-
     /**
      * @var
      */

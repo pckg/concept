@@ -4,7 +4,6 @@ namespace Pckg\Concept;
 
 trait CanHandle
 {
-
     protected $methods = [];
 
     public function canHandle($method)

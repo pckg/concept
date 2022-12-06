@@ -6,7 +6,6 @@ use Exception;
 
 class Resolver
 {
-
     protected $caller;
 
     protected $method;

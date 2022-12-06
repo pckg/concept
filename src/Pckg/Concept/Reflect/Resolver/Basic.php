@@ -7,7 +7,6 @@ use Pckg\Concept\Reflect\Resolver;
 
 class Basic implements Resolver
 {
-
     public function resolve($class, $data = [])
     {
         return Reflect::create($class, $data);

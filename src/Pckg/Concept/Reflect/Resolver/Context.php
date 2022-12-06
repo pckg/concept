@@ -7,7 +7,6 @@ use Pckg\Concept\Reflect\Resolver;
 
 class Context implements Resolver
 {
-
     public function canResolve($class)
     {
         foreach (context()->getData() as $object) {

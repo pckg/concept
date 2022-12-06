@@ -4,7 +4,6 @@ namespace Pckg\Concept;
 
 class ChainOfResponsibility
 {
-
     protected $chains = [];
 
     protected $firstChain;

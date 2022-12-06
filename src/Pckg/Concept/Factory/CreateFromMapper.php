@@ -7,7 +7,6 @@ use Pckg\Concept\Reflect;
 
 trait CreateFromMapper
 {
-
     protected array $mapper = [];
 
     public function create($key, $params = [])
