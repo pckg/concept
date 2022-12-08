@@ -7,7 +7,7 @@ namespace Pckg\Concept;
  *
  * @package Pckg\Concept
  */
-abstract class AbstractObject
+class AbstractObject
 {
     /**
      * @var array
@@ -29,7 +29,7 @@ abstract class AbstractObject
      */
     protected $return = 'firstObject';
 
-    abstract public function getElement();
+    // abstract public function getElement();
 
     /**
      * @param string $method
@@ -109,6 +109,7 @@ abstract class AbstractObject
         foreach ($args as $arg) {
             if (is_object($arg)) {
                 if ($arg instanceof AbstractObject) {
+                    // @phpstan-ignore-next-line
                     return $arg->getElement();
                 }
 
